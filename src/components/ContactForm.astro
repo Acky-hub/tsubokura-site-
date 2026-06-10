@@ -1,0 +1,52 @@
+---
+// src/components/ContactForm.astro
+---
+<form
+  action="https://formsubmit.co/info@tsubokurahideyuki.com"
+  method="POST"
+  class="space-y-6"
+>
+  <input type="hidden" name="_subject" value="公式サイトからのお問い合わせ" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="text" name="_honey" style="display:none" />
+
+  <div>
+    <label for="name" class="block text-sm font-medium mb-2">お名前</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      class="w-full px-4 py-3 bg-bg-card border border-border rounded-lg text-text focus:border-accent focus:outline-none transition-colors"
+    />
+  </div>
+
+  <div>
+    <label for="email" class="block text-sm font-medium mb-2">メールアドレス</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      class="w-full px-4 py-3 bg-bg-card border border-border rounded-lg text-text focus:border-accent focus:outline-none transition-colors"
+    />
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-medium mb-2">お問い合わせ内容</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="6"
+      required
+      class="w-full px-4 py-3 bg-bg-card border border-border rounded-lg text-text focus:border-accent focus:outline-none transition-colors resize-y"
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="px-8 py-3 bg-accent text-bg font-bold rounded-lg hover:bg-accent/90 transition-colors"
+  >
+    送信する
+  </button>
+</form>

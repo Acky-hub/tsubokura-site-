@@ -1,0 +1,16 @@
+---
+// src/pages/contact.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+<BaseLayout title="Contact" description="坪倉秀行へのお問い合わせ">
+  <section class="py-24">
+    <div class="max-w-2xl mx-auto px-6">
+      <h1 class="text-4xl font-bold mb-4 text-accent">Contact</h1>
+      <p class="text-text-sub mb-12">
+        お問い合わせは下記フォームよりお送りください。
+      </p>
+      <ContactForm />
+    </div>
+  </section>
+</BaseLayout>
