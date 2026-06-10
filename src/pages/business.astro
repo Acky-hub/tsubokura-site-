@@ -1,0 +1,42 @@
+---
+// src/pages/business.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BusinessCard from '../components/BusinessCard.astro';
+import { getBusinessList } from '../lib/microcms';
+
+let businesses = { contents: [] as any[] };
+try {
+  businesses = await getBusinessList();
+} catch {
+  // microCMS未設定時はフォールバック
+}
+
+// microCMS未設定時の静的フォールバック
+const fallbackBusinesses = [
+  {
+    name: '株式会社ヴィクトワール',
+    description: '北海道・福岡を中心にラーメン店の経営・プロデュースを展開。',
+  },
+];
+
+const items = businesses.contents.length > 0
+  ? businesses.contents
+  : fallbackBusinesses;
+---
+<BaseLayout title="Business" description="坪倉秀行が手がける事業紹介">
+  <section class="py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <h1 class="text-4xl font-bold mb-12 text-accent">Business</h1>
+      <div class="grid md:grid-cols-2 gap-8">
+        {items.map((biz) => (
+          <BusinessCard
+            name={biz.name}
+            description={biz.description}
+            image={biz.image?.url}
+            url={biz.url}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
