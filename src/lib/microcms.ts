@@ -20,7 +20,7 @@ const client = isConfigured
 export type Blog = {
   id: string;
   title: string;
-  body: string;
+  content: string;
   eyecatch?: MicroCMSImage;
   category?: string[];
   publishedAt: string;

@@ -52,7 +52,7 @@ const date = new Date(post.publishedAt).toLocaleDateString('ja-JP', {
 
       <div
         class="prose prose-invert prose-lg max-w-none prose-headings:text-text prose-a:text-accent prose-strong:text-text"
-        set:html={post.body}
+        set:html={post.content}
       />
 
       <div class="mt-16 pt-8 border-t border-border">
