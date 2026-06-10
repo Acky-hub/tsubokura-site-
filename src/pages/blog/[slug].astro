@@ -22,6 +22,7 @@ const date = new Date(post.publishedAt).toLocaleDateString('ja-JP', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
+  timeZone: 'Asia/Tokyo',
 });
 ---
 <BaseLayout title={post.title} description={`坪倉秀行のブログ: ${post.title}`} ogImage={post.eyecatch?.url}>

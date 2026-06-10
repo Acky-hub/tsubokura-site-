@@ -12,6 +12,7 @@ const date = new Date(publishedAt).toLocaleDateString('ja-JP', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
+  timeZone: 'Asia/Tokyo',
 });
 ---
 <a href={`/blog/${slug}`} class="block bg-bg-card rounded-lg border border-border overflow-hidden hover:border-accent transition-colors hover:no-underline group">
