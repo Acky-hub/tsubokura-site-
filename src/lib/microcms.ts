@@ -11,10 +11,11 @@ const apiKey =
   process.env.MICROCMS_API_KEY ||
   '';
 
-const client = createClient({
-  serviceDomain,
-  apiKey,
-});
+const isConfigured = Boolean(serviceDomain && apiKey);
+
+const client = isConfigured
+  ? createClient({ serviceDomain, apiKey })
+  : null;
 
 export type Blog = {
   id: string;
@@ -34,6 +35,7 @@ export type Business = {
 };
 
 export async function getBlogs(limit = 10, offset = 0) {
+  if (!client) throw new Error('microCMS is not configured');
   return client.getList<Blog>({
     endpoint: 'blogs',
     queries: { limit, offset, orders: '-publishedAt' },
@@ -41,6 +43,7 @@ export async function getBlogs(limit = 10, offset = 0) {
 }
 
 export async function getBlogDetail(slug: string) {
+  if (!client) throw new Error('microCMS is not configured');
   return client.getListDetail<Blog>({
     endpoint: 'blogs',
     contentId: slug,
@@ -48,6 +51,7 @@ export async function getBlogDetail(slug: string) {
 }
 
 export async function getBusinessList() {
+  if (!client) throw new Error('microCMS is not configured');
   return client.getList<Business>({
     endpoint: 'business',
   });

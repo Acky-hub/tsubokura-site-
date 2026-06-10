@@ -1,0 +1,28 @@
+---
+// src/components/BlogCard.astro
+interface Props {
+  slug: string;
+  title: string;
+  eyecatch?: string;
+  publishedAt: string;
+  category?: string[];
+}
+const { slug, title, eyecatch, publishedAt, category } = Astro.props;
+const date = new Date(publishedAt).toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<a href={`/blog/${slug}`} class="block bg-bg-card rounded-lg border border-border overflow-hidden hover:border-accent transition-colors hover:no-underline group">
+  {eyecatch && (
+    <img src={eyecatch} alt={title} class="w-full h-44 object-cover" />
+  )}
+  <div class="p-5">
+    <time class="text-text-sub text-xs">{date}</time>
+    {category && category.length > 0 && (
+      <span class="text-accent text-xs ml-2">{category[0]}</span>
+    )}
+    <h3 class="text-base font-bold mt-2 group-hover:text-accent transition-colors">{title}</h3>
+  </div>
+</a>

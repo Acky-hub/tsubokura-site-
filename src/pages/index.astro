@@ -1,0 +1,78 @@
+---
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import AboutPreview from '../components/AboutPreview.astro';
+import BusinessCard from '../components/BusinessCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import SnsLinks from '../components/SnsLinks.astro';
+import { getBlogs, getBusinessList } from '../lib/microcms';
+
+let blogs = { contents: [] as any[] };
+let businesses = { contents: [] as any[] };
+
+try {
+  blogs = await getBlogs(3);
+} catch {
+  // microCMS未設定時はスキップ
+}
+
+try {
+  businesses = await getBusinessList();
+} catch {
+  // microCMS未設定時はスキップ
+}
+---
+<BaseLayout title="公式サイト">
+  <HeroSection />
+  <AboutPreview />
+
+  {businesses.contents.length > 0 && (
+    <section class="py-16">
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="text-2xl font-bold mb-8 text-accent">Business</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {businesses.contents.map((biz) => (
+            <BusinessCard
+              name={biz.name}
+              description={biz.description}
+              image={biz.image?.url}
+              url={biz.url}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {blogs.contents.length > 0 && (
+    <section class="py-16">
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="text-2xl font-bold mb-8 text-accent">Blog</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {blogs.contents.map((post) => (
+            <BlogCard
+              slug={post.id}
+              title={post.title}
+              eyecatch={post.eyecatch?.url}
+              publishedAt={post.publishedAt}
+              category={post.category}
+            />
+          ))}
+        </div>
+        <div class="text-center mt-8">
+          <a href="/blog" class="text-accent hover:underline">すべての記事を見る →</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h2 class="text-2xl font-bold mb-8 text-accent">SNS</h2>
+      <div class="flex justify-center">
+        <SnsLinks />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

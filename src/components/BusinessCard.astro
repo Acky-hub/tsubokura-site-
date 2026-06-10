@@ -1,0 +1,24 @@
+---
+// src/components/BusinessCard.astro
+interface Props {
+  name: string;
+  description: string;
+  image?: string;
+  url?: string;
+}
+const { name, description, image, url } = Astro.props;
+---
+<div class="bg-bg-card rounded-lg border border-border overflow-hidden hover:border-accent transition-colors">
+  {image && (
+    <img src={image} alt={name} class="w-full h-48 object-cover" />
+  )}
+  <div class="p-6">
+    <h3 class="text-lg font-bold mb-2">{name}</h3>
+    <p class="text-text-sub text-sm leading-relaxed mb-4" set:html={description} />
+    {url && (
+      <a href={url} target="_blank" rel="noopener noreferrer" class="text-accent text-sm">
+        サイトを見る →
+      </a>
+    )}
+  </div>
+</div>
