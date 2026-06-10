@@ -1,0 +1,10 @@
+---
+// src/components/JsonLd.astro
+interface Props {
+  type: 'Person' | 'Organization' | 'Article';
+  data: Record<string, unknown>;
+}
+const { type, data } = Astro.props;
+const jsonLd = { '@context': 'https://schema.org', '@type': type, ...data };
+---
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

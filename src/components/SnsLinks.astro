@@ -1,0 +1,24 @@
+---
+// src/components/SnsLinks.astro
+const links = [
+  { name: 'X', url: 'https://x.com/TsubokuraHide99', icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
+  { name: 'note', url: 'https://note.com/', icon: '' },
+  { name: 'Instagram', url: 'https://instagram.com/', icon: '' },
+  { name: 'YouTube', url: 'https://youtube.com/', icon: '' },
+  { name: 'LinkedIn', url: 'https://linkedin.com/', icon: '' },
+  { name: 'TikTok', url: 'https://tiktok.com/', icon: '' },
+];
+---
+<div class="flex items-center gap-6">
+  {links.map((link) => (
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-text-sub hover:text-accent transition-colors"
+      aria-label={link.name}
+    >
+      <span class="text-sm font-medium">{link.name}</span>
+    </a>
+  ))}
+</div>

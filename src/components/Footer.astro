@@ -1,0 +1,12 @@
+---
+// src/components/Footer.astro
+import SnsLinks from './SnsLinks.astro';
+---
+<footer class="border-t border-border py-12 mt-20">
+  <div class="max-w-5xl mx-auto px-6 flex flex-col items-center gap-6">
+    <SnsLinks />
+    <p class="text-text-sub text-xs">
+      &copy; {new Date().getFullYear()} 坪倉秀行. All rights reserved.
+    </p>
+  </div>
+</footer>

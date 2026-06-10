@@ -1,0 +1,73 @@
+---
+// src/layouts/BaseLayout.astro
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = '株式会社ヴィクトワール 代表取締役 坪倉秀行の公式サイト',
+  ogImage = '/images/ogp.jpg',
+} = Astro.props;
+
+const fullTitle = `${title} | 坪倉秀行`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- OGP -->
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="坪倉秀行 公式サイト" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Person構造化データ -->
+  <JsonLd
+    type="Person"
+    data={{
+      name: '坪倉秀行',
+      jobTitle: '代表取締役',
+      worksFor: {
+        '@type': 'Organization',
+        name: '株式会社ヴィクトワール',
+      },
+      url: 'https://tsubokurahideyuki.com',
+      sameAs: [
+        'https://x.com/TsubokuraHide99',
+      ],
+    }}
+  />
+</head>
+<body class="min-h-screen flex flex-col">
+  <Header />
+  <main class="flex-1 pt-16">
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

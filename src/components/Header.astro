@@ -1,0 +1,32 @@
+---
+// src/components/Header.astro
+const navItems = [
+  { label: 'About', href: '/about' },
+  { label: 'Business', href: '/business' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+];
+const currentPath = Astro.url.pathname;
+---
+<header class="fixed top-0 w-full z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+  <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold text-text hover:no-underline">
+      坪倉秀行
+    </a>
+    <ul class="flex items-center gap-8">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm tracking-wide transition-colors hover:no-underline',
+              currentPath === item.href ? 'text-accent' : 'text-text-sub hover:text-text',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
