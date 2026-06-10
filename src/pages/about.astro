@@ -15,13 +15,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="absolute -bottom-4 -right-4 w-32 h-32 border border-accent opacity-30"></div>
         </div>
         <div>
-          <p class="text-accent text-sm tracking-[0.3em] uppercase mb-4">About</p>
-          <h1 class="text-4xl md:text-5xl font-bold mb-4">坪倉秀行</h1>
-          <p class="text-accent text-lg mb-6">株式会社ヴィクトワール 代表取締役</p>
-          <div class="gold-line w-12 mb-8"></div>
-          <p class="text-text-sub leading-relaxed">
-            岡山を拠点に、飲食・美容・サウナ事業を多角的に展開。
-            「食」「美」「癒し」の3領域で、地域に求められるサービスを追求しています。
+          <p class="section-label mb-4">About</p>
+          <h1 class="heading-serif text-4xl md:text-5xl mb-4">
+            <span class="text-gradient">坪倉秀行</span>
+          </h1>
+          <p class="text-accent/80 text-xs tracking-[0.2em] uppercase mb-8">Representative Director — Victoire Corporation</p>
+          <div class="w-8 h-px bg-accent/50 mb-8"></div>
+          <p class="text-text-sub leading-[2] text-[15px] mb-5">
+            岡山を拠点に、飲食・美容・ウェルネス・食品ブランドと、
+            4つの異なる領域で事業を展開する株式会社ヴィクトワール代表取締役。
+          </p>
+          <p class="text-text-sub leading-[2] text-[15px]">
+            「定食酒場 にこ家」「Labradorite」「DD SAUNA」「AROMA TRUFFLE 福岡店」を運営し、
+            地域に根ざしたサービスの創造に情熱を注ぐ。
           </p>
         </div>
       </div>
@@ -33,15 +39,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Philosophy -->
   <section class="py-24">
     <div class="max-w-3xl mx-auto px-6 text-center fade-in">
-      <p class="text-accent text-sm tracking-[0.3em] uppercase mb-8">Philosophy</p>
-      <h2 class="text-2xl md:text-3xl font-bold leading-relaxed mb-8">
-        「地域とともに成長する」
+      <p class="section-label mb-8">Philosophy</p>
+      <h2 class="heading-serif text-2xl md:text-3xl leading-relaxed mb-8">
+        「誰かの"いい一日"をつくる。<br />それが、すべての原点。」
       </h2>
-      <p class="text-text-sub leading-relaxed">
-        一つの事業に閉じず、飲食・美容・ウェルネスと領域を広げながら、
-        それぞれの事業で地域に本当に必要とされるサービスを創り続ける。
-        ヴィクトワールが目指すのは、事業を通じた地域社会への貢献と、
-        関わるすべての人の生活を豊かにすること。
+      <div class="gold-line w-16 mx-auto mb-10"></div>
+      <p class="text-text-sub leading-[2.2] text-sm mb-6">
+        飲食も、美容も、サウナも、本質は同じだと考えています。
+        目の前の一人を、心から満足させること。
+        「来てよかった」「また来たい」と思ってもらえる瞬間を、一つでも多くつくること。
+      </p>
+      <p class="text-text-sub leading-[2.2] text-sm">
+        事業の数や規模ではなく、一つひとつの現場で生まれる「ありがとう」の質にこだわる。
+        それがヴィクトワールの変わらない信念です。
       </p>
     </div>
   </section>
@@ -51,26 +61,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Career -->
   <section class="py-24">
     <div class="max-w-3xl mx-auto px-6 fade-in">
-      <p class="text-accent text-sm tracking-[0.3em] uppercase mb-8 text-center">Career</p>
-      <h2 class="text-2xl md:text-3xl font-bold mb-12 text-center">経歴</h2>
-      <div class="space-y-8 border-l border-border pl-8">
+      <p class="section-label mb-8 text-center">Career</p>
+      <h2 class="heading-serif text-2xl md:text-3xl mb-12 text-center">経歴</h2>
+      <div class="space-y-10 border-l border-border/50 pl-8">
         <div class="relative">
           <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="text-text-sub text-sm mb-1">※ 年次情報をここに記載</p>
-          <p class="font-bold">株式会社ヴィクトワール 設立</p>
+          <p class="text-accent text-xs tracking-wider mb-1">起業</p>
+          <p class="font-semibold text-lg">株式会社ヴィクトワール 設立</p>
+          <p class="text-text-sub text-sm mt-2 leading-relaxed">
+            岡山市にて法人を設立。「地域に必要とされる事業を、自分の手で創る」という
+            志のもと、起業の道を選ぶ。
+          </p>
         </div>
         <div class="relative">
           <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="font-bold">定食酒場 にこ家 開業</p>
-          <p class="text-text-sub text-sm mt-1">岡山市北区奥田</p>
+          <p class="text-accent text-xs tracking-wider mb-1">飲食事業</p>
+          <p class="font-semibold text-lg">定食酒場 にこ家 開業</p>
+          <p class="text-text-sub text-sm mt-2 leading-relaxed">
+            岡山市北区奥田にオープン。「毎日食べたくなる、心のこもった家庭料理」をコンセプトに、
+            地域の常連客に愛される店づくりを追求。
+          </p>
         </div>
         <div class="relative">
           <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="font-bold">Labradorite（美容サロン）開業</p>
+          <p class="text-accent text-xs tracking-wider mb-1">美容事業</p>
+          <p class="font-semibold text-lg">Labradorite 開業</p>
+          <p class="text-text-sub text-sm mt-2 leading-relaxed">
+            大阪・岡山を拠点に、マツエク・リラクゼーション・ホットストーンを提供する
+            ビューティーサロンを展開。一人ひとりに寄り添った施術で支持を集める。
+          </p>
         </div>
         <div class="relative">
           <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="font-bold">DD SAUNA 開業</p>
+          <p class="text-accent text-xs tracking-wider mb-1">ウェルネス事業</p>
+          <p class="font-semibold text-lg">DD SAUNA 開業</p>
+          <p class="text-text-sub text-sm mt-2 leading-relaxed">
+            岡山市北区に完全個室のプライベートラグジュアリーサウナ施設をオープン。
+            「誰にも邪魔されない、上質な"ととのい"の贅沢」を提案。
+          </p>
+        </div>
+        <div class="relative">
+          <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
+          <p class="text-accent text-xs tracking-wider mb-1">食品ブランド</p>
+          <p class="font-semibold text-lg">AROMA TRUFFLE 福岡店 出店</p>
+          <p class="text-text-sub text-sm mt-2 leading-relaxed">
+            福岡・岩田屋本店にトリュフ香るグルメブランド「AROMA TRUFFLE」を出店。
+            グループの事業領域をさらに拡大。
+          </p>
         </div>
       </div>
     </div>
@@ -80,15 +117,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <!-- Message -->
   <section class="py-24">
-    <div class="max-w-3xl mx-auto px-6 text-center fade-in">
-      <p class="text-accent text-sm tracking-[0.3em] uppercase mb-8">Message</p>
-      <h2 class="text-2xl md:text-3xl font-bold mb-8">代表メッセージ</h2>
-      <blockquote class="text-text-sub text-lg leading-relaxed italic">
-        「地域の皆様に支えられ、今日のヴィクトワールがあります。<br />
-        これからも新しい挑戦を続け、<br class="hidden md:block" />
-        岡山から新たな価値を発信してまいります。」
-      </blockquote>
-      <p class="text-accent mt-8">坪倉秀行</p>
+    <div class="max-w-3xl mx-auto px-6 fade-in">
+      <p class="section-label mb-8 text-center">Message</p>
+      <h2 class="heading-serif text-2xl md:text-3xl mb-12 text-center">代表メッセージ</h2>
+
+      <div class="text-text-sub text-sm leading-[2.2] space-y-6 mb-12">
+        <p>
+          僕は、特別な才能があったわけではありません。
+          学歴もない。コネもない。資金もない。
+          あったのは、<span class="text-text">「このままじゃ終われない」という強い気持ち</span>だけでした。
+        </p>
+        <p>
+          最初に始めた「にこ家」は、自分の理想を形にした店です。
+          派手さはなくていい。でも、来てくれた人が「今日はいい一日だったな」と思って帰れる場所。
+          それだけを考えて、毎日厨房に立ちました。
+        </p>
+        <p>
+          気づけば、飲食だけでなく美容やサウナ、食品ブランドと、
+          事業は4つに広がっていました。
+          業種は違っても、根っこにあるものは同じです。
+          <span class="text-text">「目の前の人を、本気で喜ばせたい」</span>。ただそれだけ。
+        </p>
+        <p>
+          これからも、岡山という地域に根を張りながら、
+          全国へ、そしてその先へ。
+          僕たちにしかできない価値を、一つずつ積み上げていきます。
+        </p>
+        <p>
+          もし少しでも共感していただけたなら、
+          お客様として、仲間として、パートナーとして——
+          <span class="text-text">ぜひ一度、僕たちの現場に足を運んでみてください。</span>
+        </p>
+      </div>
+
+      <div class="text-right">
+        <p class="text-accent text-sm mb-1">株式会社ヴィクトワール 代表取締役</p>
+        <p class="heading-serif text-2xl text-gradient">坪倉秀行</p>
+      </div>
     </div>
   </section>
 </BaseLayout>
