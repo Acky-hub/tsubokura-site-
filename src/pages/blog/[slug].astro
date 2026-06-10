@@ -1,0 +1,63 @@
+---
+// src/pages/blog/[slug].astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { getBlogs, getBlogDetail } from '../../lib/microcms';
+
+export async function getStaticPaths() {
+  try {
+    const blogs = await getBlogs(100);
+    return blogs.contents.map((post) => ({
+      params: { slug: post.id },
+    }));
+  } catch {
+    return [];
+  }
+}
+
+const { slug } = Astro.params;
+const post = await getBlogDetail(slug!);
+
+const date = new Date(post.publishedAt).toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<BaseLayout title={post.title} description={`坪倉秀行のブログ: ${post.title}`} ogImage={post.eyecatch?.url}>
+  <JsonLd
+    type="Article"
+    data={{
+      headline: post.title,
+      author: { '@type': 'Person', name: '坪倉秀行' },
+      datePublished: post.publishedAt,
+      image: post.eyecatch?.url,
+    }}
+  />
+
+  <article class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <header class="mb-12">
+        <time class="text-text-sub text-sm">{date}</time>
+        <h1 class="text-3xl md:text-4xl font-bold mt-3">{post.title}</h1>
+      </header>
+
+      {post.eyecatch && (
+        <img
+          src={post.eyecatch.url}
+          alt={post.title}
+          class="w-full rounded-lg mb-12"
+        />
+      )}
+
+      <div
+        class="prose prose-invert prose-lg max-w-none prose-headings:text-text prose-a:text-accent prose-strong:text-text"
+        set:html={post.body}
+      />
+
+      <div class="mt-16 pt-8 border-t border-border">
+        <a href="/blog" class="text-accent hover:underline">← 記事一覧に戻る</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

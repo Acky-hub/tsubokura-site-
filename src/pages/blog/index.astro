@@ -1,0 +1,35 @@
+---
+// src/pages/blog/index.astro
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getBlogs } from '../../lib/microcms';
+
+let blogs = { contents: [] as any[], totalCount: 0 };
+try {
+  blogs = await getBlogs(20);
+} catch {
+  // microCMS未設定時
+}
+---
+<BaseLayout title="Blog" description="坪倉秀行のブログ記事一覧">
+  <section class="py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <h1 class="text-4xl font-bold mb-12 text-accent">Blog</h1>
+      {blogs.contents.length > 0 ? (
+        <div class="grid md:grid-cols-3 gap-6">
+          {blogs.contents.map((post) => (
+            <BlogCard
+              slug={post.id}
+              title={post.title}
+              eyecatch={post.eyecatch?.url}
+              publishedAt={post.publishedAt}
+              category={post.category}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="text-text-sub">記事の準備中です。</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
