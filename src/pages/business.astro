@@ -11,11 +11,41 @@ try {
   // microCMS未設定時はフォールバック
 }
 
-// microCMS未設定時の静的フォールバック
 const fallbackBusinesses = [
   {
     name: '株式会社ヴィクトワール',
-    description: '北海道・福岡を中心にラーメン店の経営・プロデュースを展開。',
+    description: '岡山を拠点に飲食・美容・サウナ事業を多角的に展開する総合企業。',
+    category: 'Corporate',
+    image: { url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80' },
+    url: 'https://victoire-corp.com/',
+  },
+  {
+    name: '定食酒場 にこ家',
+    description: '岡山市北区奥田の地域に愛される定食酒場。心のこもった家庭料理を提供。',
+    category: 'Food & Dining',
+    image: { url: '/images/nikoya.jpg' },
+    url: 'https://tabelog.com/okayama/A3301/A330101/33017934/',
+  },
+  {
+    name: 'Labradorite',
+    description: '大阪・岡山を拠点にマツエク・リラクゼーション・ホットストーンを提供するビューティーサロン。',
+    category: 'Beauty',
+    image: { url: '/images/labradorite.jpg' },
+    url: 'https://beauty.hotpepper.jp/kr/slnH000481641/',
+  },
+  {
+    name: 'DD SAUNA',
+    description: '岡山市北区。完全個室の大型プライベートラグジュアリーサウナ施設。',
+    category: 'Wellness',
+    image: { url: '/images/dd-sauna.webp' },
+    url: 'https://the-dd-sauna.com/',
+  },
+  {
+    name: 'AROMA TRUFFLE',
+    description: '福岡・岩田屋本店に出店。トリュフの香りが織りなすグルメブランド。',
+    category: 'Food & Gourmet',
+    image: { url: '/images/aroma-truffle.webp' },
+    url: 'https://aromatruffle.jp/',
   },
 ];
 
@@ -26,12 +56,20 @@ const items = businesses.contents.length > 0
 <BaseLayout title="Business" description="坪倉秀行が手がける事業紹介">
   <section class="py-24">
     <div class="max-w-5xl mx-auto px-6">
-      <h1 class="text-4xl font-bold mb-12 text-accent">Business</h1>
-      <div class="grid md:grid-cols-2 gap-8">
+      <div class="text-center mb-16 fade-in">
+        <p class="text-accent text-sm tracking-[0.3em] uppercase mb-4">Business</p>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">事業紹介</h1>
+        <div class="gold-line w-16 mx-auto mb-8"></div>
+        <p class="text-text-sub max-w-2xl mx-auto">
+          「食」「美」「癒し」の3領域で、地域に根ざした事業を展開しています。
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 stagger">
         {items.map((biz) => (
           <BusinessCard
             name={biz.name}
             description={biz.description}
+            category={biz.category}
             image={biz.image?.url}
             url={biz.url}
           />

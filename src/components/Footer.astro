@@ -2,11 +2,17 @@
 // src/components/Footer.astro
 import SnsLinks from './SnsLinks.astro';
 ---
-<footer class="border-t border-border py-12 mt-20">
-  <div class="max-w-5xl mx-auto px-6 flex flex-col items-center gap-6">
-    <SnsLinks />
-    <p class="text-text-sub text-xs">
-      &copy; {new Date().getFullYear()} 坪倉秀行. All rights reserved.
-    </p>
+<footer class="py-12 border-t border-border/30">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="text-center md:text-left">
+        <p class="text-sm font-bold tracking-wider mb-1">TSUBOKURA HIDEYUKI</p>
+        <p class="text-text-sub text-xs">株式会社ヴィクトワール 代表取締役</p>
+      </div>
+      <SnsLinks />
+      <p class="text-text-sub text-[10px] tracking-wider">
+        &copy; {new Date().getFullYear()} Tsubokura Hideyuki. All rights reserved.
+      </p>
+    </div>
   </div>
 </footer>

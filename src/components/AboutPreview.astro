@@ -1,16 +1,45 @@
 ---
 // src/components/AboutPreview.astro
 ---
-<section class="py-16">
-  <div class="max-w-5xl mx-auto px-6">
-    <div class="bg-bg-card rounded-lg border border-border p-8 md:p-12">
-      <h2 class="text-2xl font-bold mb-6 text-accent">About</h2>
-      <p class="text-text-sub leading-relaxed mb-6">
-        株式会社ヴィクトワール代表取締役として、北海道・福岡を中心にラーメン店の経営・プロデュースを手がけています。「食」を通じた地域の魅力発信と、持続可能なビジネスモデルの構築を目指しています。
-      </p>
-      <a href="/about" class="inline-flex items-center text-accent hover:underline">
-        詳しく見る →
-      </a>
+<section class="py-0">
+  <div class="grid md:grid-cols-2 min-h-[80vh]">
+    <!-- Image side -->
+    <div class="relative overflow-hidden img-zoom bg-[#111]">
+      <img
+        src="/images/hero.jpg"
+        alt="坪倉秀行"
+        class="w-full h-full object-cover min-h-[50vh] md:min-h-full mix-blend-luminosity opacity-90"
+      />
+      <div class="absolute inset-0 bg-[#111]/15"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#111]/30"></div>
+    </div>
+
+    <!-- Text side -->
+    <div class="flex items-center bg-[#111] px-8 md:px-16 lg:px-20 py-20 md:py-0">
+      <div class="max-w-md fade-in">
+        <p class="section-label mb-5">About</p>
+        <h2 class="heading-serif text-4xl md:text-5xl mb-3">
+          <span class="text-gradient">坪倉秀行</span>
+        </h2>
+        <p class="text-accent/80 text-xs tracking-[0.2em] uppercase mb-10">Representative Director — Victoire Corp.</p>
+        <div class="w-8 h-px bg-accent/50 mb-10"></div>
+        <p class="text-text-sub leading-[2] text-[15px] mb-5">
+          岡山を拠点に、「定食酒場 にこ家」をはじめとする飲食事業、
+          美容サロン「Labradorite」、ウェルネス施設「DD SAUNA」、
+          そして「AROMA TRUFFLE」福岡店を運営。
+        </p>
+        <p class="text-text-sub leading-[2] text-[15px] mb-12">
+          異なる業種を横断しながら、それぞれの領域で
+          地域に求められるサービスを追求しています。
+        </p>
+        <a
+          href="/about"
+          class="inline-flex items-center gap-4 text-accent text-[11px] tracking-[0.25em] uppercase font-semibold group"
+        >
+          Read More
+          <span class="w-8 h-px bg-accent/50 group-hover:w-14 transition-all duration-500"></span>
+        </a>
+      </div>
     </div>
   </div>
 </section>

@@ -2,54 +2,109 @@
 // src/pages/index.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
+import StatsSection from '../components/StatsSection.astro';
+import VisionSection from '../components/VisionSection.astro';
 import AboutPreview from '../components/AboutPreview.astro';
 import BusinessCard from '../components/BusinessCard.astro';
 import BlogCard from '../components/BlogCard.astro';
-import SnsLinks from '../components/SnsLinks.astro';
+import ChannelSection from '../components/ChannelSection.astro';
+import RecruitSection from '../components/RecruitSection.astro';
 import { getBlogs, getBusinessList } from '../lib/microcms';
 
 let blogs = { contents: [] as any[] };
 let businesses = { contents: [] as any[] };
 
-try {
-  blogs = await getBlogs(3);
-} catch {
-  // microCMS未設定時はスキップ
-}
+try { blogs = await getBlogs(3); } catch {}
+try { businesses = await getBusinessList(); } catch {}
 
-try {
-  businesses = await getBusinessList();
-} catch {
-  // microCMS未設定時はスキップ
-}
+const fallbackBusinesses = [
+  {
+    name: '定食酒場 にこ家',
+    description: '岡山市北区。地域に愛される心のこもった家庭料理。',
+    category: 'Food & Dining',
+    image: '/images/nikoya.jpg',
+    url: 'https://tabelog.com/okayama/A3301/A330101/33017934/',
+  },
+  {
+    name: 'Labradorite',
+    description: '大阪・岡山。マツエク・リラクゼーション・ホットストーン。',
+    category: 'Beauty',
+    image: '/images/labradorite.jpg',
+    url: 'https://beauty.hotpepper.jp/kr/slnH000481641/',
+  },
+  {
+    name: 'DD SAUNA',
+    description: '岡山市北区。完全個室の大型プライベートラグジュアリーサウナ。',
+    category: 'Wellness',
+    image: '/images/dd-sauna.webp',
+    url: 'https://the-dd-sauna.com/',
+  },
+  {
+    name: 'AROMA TRUFFLE',
+    description: '福岡・岩田屋本店。トリュフ香るグルメブランド。',
+    category: 'Food & Gourmet',
+    image: '/images/aroma-truffle.webp',
+    url: 'https://aromatruffle.jp/',
+  },
+  {
+    name: '株式会社ヴィクトワール',
+    description: '飲食・美容・サウナ事業を多角的に展開する総合企業。',
+    category: 'Corporate',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80',
+    url: 'https://victoire-corp.com/',
+  },
+];
+
+const bizItems = businesses.contents.length > 0 ? businesses.contents : fallbackBusinesses;
 ---
-<BaseLayout title="公式サイト">
+<BaseLayout title="公式サイト" fullWidth={true}>
   <HeroSection />
+
+  <StatsSection />
+
   <AboutPreview />
 
-  {businesses.contents.length > 0 && (
-    <section class="py-16">
-      <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-2xl font-bold mb-8 text-accent">Business</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          {businesses.contents.map((biz) => (
-            <BusinessCard
-              name={biz.name}
-              description={biz.description}
-              image={biz.image?.url}
-              url={biz.url}
-            />
-          ))}
+  <VisionSection />
+
+  <!-- Business -->
+  <section class="py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="mb-16 fade-in">
+        <p class="section-label mb-4">Business</p>
+        <div class="flex items-end justify-between">
+          <h2 class="heading-serif text-3xl md:text-4xl">事業紹介</h2>
+          <a
+            href="/business"
+            class="hidden md:inline-flex items-center gap-4 text-accent text-[11px] tracking-[0.25em] uppercase font-semibold group"
+          >
+            View All
+            <span class="w-8 h-px bg-accent/50 group-hover:w-14 transition-all duration-500"></span>
+          </a>
         </div>
       </div>
-    </section>
-  )}
+      <div class="grid md:grid-cols-2 gap-4 stagger">
+        {bizItems.map((biz) => (
+          <BusinessCard
+            name={biz.name}
+            description={biz.description}
+            category={biz.category}
+            image={biz.image}
+            url={biz.url}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
 
+  <!-- Blog -->
   {blogs.contents.length > 0 && (
-    <section class="py-16">
-      <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-2xl font-bold mb-8 text-accent">Blog</h2>
-        <div class="grid md:grid-cols-3 gap-6">
+    <section class="py-28 border-t border-border/30">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="mb-16 fade-in">
+          <p class="section-label mb-4">Blog</p>
+          <h2 class="heading-serif text-3xl md:text-4xl">最新の記事</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-5 stagger">
           {blogs.contents.map((post) => (
             <BlogCard
               slug={post.id}
@@ -60,19 +115,35 @@ try {
             />
           ))}
         </div>
-        <div class="text-center mt-8">
-          <a href="/blog" class="text-accent hover:underline">すべての記事を見る →</a>
-        </div>
       </div>
     </section>
   )}
 
-  <section class="py-16">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <h2 class="text-2xl font-bold mb-8 text-accent">SNS</h2>
-      <div class="flex justify-center">
-        <SnsLinks />
-      </div>
+  <!-- Channel -->
+  <ChannelSection />
+
+  <!-- Recruit -->
+  <RecruitSection />
+
+  <!-- Contact CTA -->
+  <section class="relative py-36 overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80"
+        alt=""
+        class="w-full h-full object-cover opacity-15"
+        aria-hidden="true"
+      />
+      <div class="absolute inset-0 bg-bg/70"></div>
+    </div>
+    <div class="relative z-10 text-center px-6 fade-in">
+      <p class="section-label mb-6">Contact</p>
+      <h2 class="heading-serif text-3xl md:text-4xl mb-6">お問い合わせ</h2>
+      <p class="text-text-sub text-sm mb-12 max-w-lg mx-auto leading-[2]">
+        事業に関するお問い合わせ、取材依頼など、<br class="hidden md:block" />
+        お気軽にご連絡ください。
+      </p>
+      <a href="/contact" class="btn-luxury-filled">Contact Us</a>
     </div>
   </section>
 </BaseLayout>

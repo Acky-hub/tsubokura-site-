@@ -1,23 +1,36 @@
 ---
 // src/components/HeroSection.astro
 ---
-<section class="relative py-24 md:py-32">
-  <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-    <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-2 border-accent shrink-0">
-      <img
-        src="/images/hero.jpg"
-        alt="坪倉秀行"
-        class="w-full h-full object-cover"
-        width="224"
-        height="224"
-      />
-    </div>
-    <div>
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">坪倉秀行</h1>
-      <p class="text-accent text-lg mb-2">株式会社ヴィクトワール 代表取締役</p>
-      <p class="text-text-sub leading-relaxed max-w-lg">
-        北海道を拠点に、外食産業を中心としたビジネスを展開。ラーメン文化の発信と地域活性化に取り組んでいます。
+<section class="relative h-screen overflow-hidden">
+  <div class="absolute inset-0">
+    <img
+      src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1920&q=80"
+      alt=""
+      class="w-full h-full object-cover"
+      aria-hidden="true"
+    />
+    <div class="cinematic-overlay absolute inset-0"></div>
+  </div>
+
+  <div class="relative z-10 h-full flex flex-col justify-end pb-28 md:pb-36 px-6 md:px-12">
+    <div class="max-w-5xl mx-auto w-full">
+      <div class="gold-line-left w-12 mb-8 fade-in"></div>
+      <p class="section-label mb-4 fade-in">Victoire Corporation — CEO</p>
+      <h1 class="heading-serif text-6xl md:text-8xl lg:text-[7rem] leading-[1.05] mb-8 fade-in">
+        <span class="text-gradient">坪倉秀行</span>
+      </h1>
+      <p class="text-text-sub/70 text-sm md:text-base max-w-lg leading-[2] tracking-wide mb-12 fade-in">
+        岡山を拠点に、飲食・美容・ウェルネス事業を展開。<br />
+        地域の可能性を信じ、新たな価値を創り続ける。
       </p>
+      <div class="flex gap-5 fade-in">
+        <a href="/about" class="btn-luxury-filled">Profile</a>
+        <a href="#recruit" class="btn-luxury-outline">Recruit</a>
+      </div>
     </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+    <div class="w-px h-12 bg-gradient-to-b from-accent/50 to-transparent animate-pulse"></div>
   </div>
 </section>

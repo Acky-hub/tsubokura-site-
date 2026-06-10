@@ -1,0 +1,23 @@
+---
+// src/components/StatsSection.astro
+// Minimal stats bar
+const stats = [
+  { number: '5', suffix: '', label: 'Businesses' },
+  { number: '4', suffix: '', label: 'Industries' },
+  { number: '岡山', suffix: '', label: 'Headquarters' },
+];
+---
+<section class="py-16 border-y border-border/50">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="grid grid-cols-3 gap-4 stagger">
+      {stats.map((stat) => (
+        <div class="text-center py-4">
+          <div class="text-3xl md:text-4xl font-bold text-gradient mb-2">
+            {stat.number}{stat.suffix}
+          </div>
+          <p class="text-text-sub text-[11px] tracking-[0.25em] uppercase">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

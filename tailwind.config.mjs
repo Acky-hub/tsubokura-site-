@@ -19,6 +19,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'Noto Sans JP', ...defaultTheme.fontFamily.sans],
+        serif: ['Cormorant Garamond', 'Noto Serif JP', ...defaultTheme.fontFamily.serif],
       },
     },
   },

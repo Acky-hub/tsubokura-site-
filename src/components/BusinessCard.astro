@@ -1,24 +1,43 @@
 ---
 // src/components/BusinessCard.astro
+// Cinematic overlay card — saunachelin-style
 interface Props {
   name: string;
   description: string;
+  category?: string;
   image?: string;
   url?: string;
 }
-const { name, description, image, url } = Astro.props;
+const { name, description, category, image, url } = Astro.props;
 ---
-<div class="bg-bg-card rounded-lg border border-border overflow-hidden hover:border-accent transition-colors">
-  {image && (
-    <img src={image} alt={name} class="w-full h-48 object-cover" />
-  )}
-  <div class="p-6">
-    <h3 class="text-lg font-bold mb-2">{name}</h3>
-    <p class="text-text-sub text-sm leading-relaxed mb-4" set:html={description} />
-    {url && (
-      <a href={url} target="_blank" rel="noopener noreferrer" class="text-accent text-sm">
-        サイトを見る →
-      </a>
+<a
+  href={url || '#'}
+  target={url ? '_blank' : undefined}
+  rel={url ? 'noopener noreferrer' : undefined}
+  class="group block relative overflow-hidden img-zoom"
+>
+  <!-- Image -->
+  <div class="aspect-[16/10] bg-bg-card overflow-hidden">
+    {image ? (
+      <img
+        src={image}
+        alt={name}
+        class="w-full h-full object-cover opacity-70 group-hover:opacity-90"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-bg-card to-border"></div>
     )}
   </div>
-</div>
+
+  <!-- Overlay -->
+  <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-bg via-bg/50 to-transparent">
+    {category && (
+      <span class="section-label mb-3">{category}</span>
+    )}
+    <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-accent transition-colors duration-300">{name}</h3>
+    <p class="text-text-sub text-sm leading-relaxed opacity-80">{description}</p>
+  </div>
+
+  <!-- Bottom accent line -->
+  <div class="absolute bottom-0 left-0 w-0 h-[2px] bg-accent group-hover:w-full transition-all duration-600"></div>
+</a>
