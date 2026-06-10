@@ -13,7 +13,9 @@ const currentPath = Astro.url.pathname;
     <a href="/" class="text-xl font-bold text-text hover:no-underline">
       坪倉秀行
     </a>
-    <ul class="flex items-center gap-8">
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-8">
       {navItems.map((item) => (
         <li>
           <a
@@ -28,5 +30,43 @@ const currentPath = Astro.url.pathname;
         </li>
       ))}
     </ul>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="menu-toggle"
+      class="md:hidden text-text p-2"
+      aria-label="メニューを開く"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-bg">
+    <ul class="px-6 py-4 space-y-4">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'block text-sm tracking-wide',
+              currentPath === item.href ? 'text-accent' : 'text-text-sub',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
 </header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>
