@@ -1,0 +1,40 @@
+---
+// src/pages/about.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="About" description="坪倉秀行のプロフィール・経歴・メッセージ">
+  <section class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <h1 class="text-4xl font-bold mb-12 text-accent">About</h1>
+
+      <div class="flex flex-col md:flex-row gap-10 mb-16">
+        <div class="w-40 h-40 rounded-full overflow-hidden border-2 border-accent shrink-0">
+          <img src="/images/hero.jpg" alt="坪倉秀行" class="w-full h-full object-cover" width="160" height="160" />
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">坪倉秀行</h2>
+          <p class="text-accent mb-4">株式会社ヴィクトワール 代表取締役</p>
+          <p class="text-text-sub leading-relaxed">
+            北海道を拠点に、外食産業を中心としたビジネスを展開。ラーメン文化の発信と地域活性化に取り組んでいます。
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-12">
+        <div>
+          <h3 class="text-xl font-bold mb-4 border-l-4 border-accent pl-4">経歴</h3>
+          <div class="text-text-sub leading-relaxed space-y-3 pl-4">
+            <p>※ 坪倉さんの経歴をここに記載（後で更新）</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold mb-4 border-l-4 border-accent pl-4">メッセージ</h3>
+          <div class="text-text-sub leading-relaxed space-y-3 pl-4">
+            <p>※ 坪倉さんからのメッセージをここに記載（後で更新）</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
