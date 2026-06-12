@@ -1,29 +1,48 @@
 ---
-// src/components/BlogCard.astro
 interface Props {
   slug: string;
   title: string;
-  eyecatch?: string;
+  eyecatch?: { url: string; width?: number; height?: number } | string;
   publishedAt: string;
-  category?: string[];
+  category?: { name: string }[] | string[];
 }
+
 const { slug, title, eyecatch, publishedAt, category } = Astro.props;
-const date = new Date(publishedAt).toLocaleDateString('ja-JP', {
+const dateStr = new Date(publishedAt).toLocaleDateString('ja-JP', {
   year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  timeZone: 'Asia/Tokyo',
+  month: '2-digit',
+  day: '2-digit',
 });
+const imageUrl = typeof eyecatch === 'string' ? eyecatch : eyecatch?.url;
+const categoryName = Array.isArray(category) && category.length > 0
+  ? (typeof category[0] === 'string' ? category[0] : category[0]?.name)
+  : undefined;
 ---
-<a href={`/blog/${slug}`} class="block bg-bg-card rounded-lg border border-border overflow-hidden hover:border-accent transition-colors hover:no-underline group">
-  {eyecatch && (
-    <img src={eyecatch} alt={title} class="w-full h-44 object-cover" />
+
+<a
+  href={`/blog/${slug}`}
+  class="group block border border-border overflow-hidden card-metallic-border transition-all duration-400"
+  data-cursor-hover
+>
+  {imageUrl && (
+    <div class="relative overflow-hidden aspect-[16/9]">
+      <img
+        src={imageUrl}
+        alt={title}
+        class="w-full h-full object-cover img-zoom"
+        loading="lazy"
+      />
+    </div>
   )}
   <div class="p-5">
-    <time class="text-text-sub text-xs">{date}</time>
-    {category && category.length > 0 && (
-      <span class="text-accent text-xs ml-2">{category[0]}</span>
-    )}
-    <h3 class="text-base font-bold mt-2 group-hover:text-accent transition-colors">{title}</h3>
+    <div class="flex items-center gap-3 mb-3">
+      <time class="text-[10px] tracking-wider text-text-sub">{dateStr}</time>
+      {categoryName && (
+        <span class="text-[10px] tracking-wider text-accent">{categoryName}</span>
+      )}
+    </div>
+    <h3 class="text-sm leading-relaxed group-hover:text-silver-light transition-colors duration-300">
+      {title}
+    </h3>
   </div>
 </a>
