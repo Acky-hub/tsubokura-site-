@@ -1,0 +1,38 @@
+---
+// Custom cursor component - desktop only (>1139px)
+---
+
+<div class="cursor-dot" id="cursor-dot"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.innerWidth < 1140) return;
+
+    const cursor = document.getElementById('cursor-dot');
+    if (!cursor) return;
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animate() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      cursor.style.transform = `translate(${cursorX - cursor.offsetWidth / 2}px, ${cursorY - cursor.offsetHeight / 2}px)`;
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    const hoverElements = document.querySelectorAll('a, button, [data-cursor-hover]');
+    hoverElements.forEach((el) => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+  });
+</script>
