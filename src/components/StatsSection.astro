@@ -1,21 +1,25 @@
 ---
-// src/components/StatsSection.astro
-// Minimal stats bar
 const stats = [
-  { number: '5', suffix: '', label: 'Businesses' },
-  { number: '4', suffix: '', label: 'Industries' },
-  { number: '岡山', suffix: '', label: 'Headquarters' },
+  { value: 5, label: 'Businesses', suffix: '' },
+  { value: 4, label: 'Industries', suffix: '' },
+  { value: 2018, label: 'Since', suffix: '', isYear: true },
 ];
 ---
-<section class="py-16 border-y border-border/50">
+
+<section class="py-24 md:py-32">
   <div class="max-w-5xl mx-auto px-6">
-    <div class="grid grid-cols-3 gap-4 stagger">
+    <div class="grid grid-cols-3 gap-8" data-stagger-children>
       {stats.map((stat) => (
-        <div class="text-center py-4">
-          <div class="text-3xl md:text-4xl font-bold text-gradient mb-2">
-            {stat.number}{stat.suffix}
-          </div>
-          <p class="text-text-sub text-[11px] tracking-[0.25em] uppercase">{stat.label}</p>
+        <div class="text-center">
+          <span
+            class="block font-serif text-4xl md:text-6xl text-gradient-metallic"
+            data-count-to={stat.isYear ? undefined : stat.value}
+          >
+            {stat.isYear ? stat.value : '0'}
+          </span>
+          <span class="block mt-3 text-[10px] tracking-[0.3em] uppercase text-text-sub">
+            {stat.label}
+          </span>
         </div>
       ))}
     </div>

@@ -1,43 +1,38 @@
 ---
-// src/components/AboutPreview.astro
----
-<section class="py-0">
-  <div class="grid md:grid-cols-2 min-h-[80vh]">
-    <!-- Image side -->
-    <div class="relative overflow-hidden img-zoom bg-[#111]">
-      <img
-        src="/images/hero.jpg"
-        alt="坪倉秀行"
-        class="w-full h-full object-cover min-h-[50vh] md:min-h-full mix-blend-luminosity opacity-90"
-      />
-      <div class="absolute inset-0 bg-[#111]/15"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#111]/30"></div>
-    </div>
+interface Props {
+  image?: string;
+}
 
-    <!-- Text side -->
-    <div class="flex items-center bg-[#111] px-8 md:px-16 lg:px-20 py-20 md:py-0">
-      <div class="max-w-md fade-in">
-        <p class="section-label mb-5">About</p>
-        <h2 class="heading-serif text-4xl md:text-5xl mb-3">
-          <span class="text-gradient">坪倉秀行</span>
+const { image = '/images/hero.jpg' } = Astro.props;
+---
+
+<section class="py-24 md:py-40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+      <!-- Image with parallax -->
+      <div class="relative overflow-hidden gsap-fade-left">
+        <div data-parallax="0.15">
+          <img
+            src={image}
+            alt="坪倉秀行"
+            class="w-full aspect-[3/4] object-cover mix-blend-luminosity hover:mix-blend-normal transition-all duration-700"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="gsap-fade-right">
+        <p class="section-label mb-6">About</p>
+        <h2 class="heading-serif text-3xl md:text-4xl mb-6">
+          坪倉 秀行
         </h2>
-        <p class="text-accent/80 text-xs tracking-[0.2em] uppercase mb-10">Representative Director — Victoire Corp.</p>
-        <div class="w-8 h-px bg-accent/50 mb-10"></div>
-        <p class="text-text-sub leading-[2] text-[15px] mb-5">
-          岡山を拠点に、「定食酒場 にこ家」をはじめとする飲食事業、
-          美容サロン「Labradorite」、ウェルネス施設「DD SAUNA」、
-          そして「AROMA TRUFFLE」福岡店を運営。
+        <p class="text-sm text-text-sub leading-loose mb-8">
+          岡山を拠点に飲食・美容・ウェルネス・食品ブランドの4業種5事業を展開する経営者。
+          「つくる"いい一日"」をコンセプトに、人々の日常に価値ある体験を提供し続ける。
         </p>
-        <p class="text-text-sub leading-[2] text-[15px] mb-12">
-          異なる業種を横断しながら、それぞれの領域で
-          地域に求められるサービスを追求しています。
-        </p>
-        <a
-          href="/about"
-          class="inline-flex items-center gap-4 text-accent text-[11px] tracking-[0.25em] uppercase font-semibold group"
-        >
+        <a href="/about" class="btn-luxury btn-luxury-outline" data-cursor-hover>
           Read More
-          <span class="w-8 h-px bg-accent/50 group-hover:w-14 transition-all duration-500"></span>
         </a>
       </div>
     </div>
