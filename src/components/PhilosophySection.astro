@@ -1,0 +1,94 @@
+---
+const phrases = [
+  'つくる、"いい一日"',
+  '日常に、非日常の体験を。',
+  '岡山から、世界基準の価値を。',
+];
+---
+
+<section class="relative noise-bg" id="philosophy-section">
+  <!-- Pinned scroll container -->
+  <div class="h-[300vh]">
+    <div class="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+      <div class="text-center px-6">
+        <p class="section-label mb-10 gsap-fade-up">Philosophy</p>
+        {phrases.map((phrase, i) => (
+          <p
+            class="philosophy-phrase heading-serif text-2xl md:text-5xl lg:text-6xl leading-relaxed mb-8 opacity-0"
+            data-phrase-index={i}
+          >
+            {phrase}
+          </p>
+        ))}
+        <div class="metallic-line-gold w-24 mx-auto mt-12 opacity-0" id="philosophy-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const section = document.getElementById('philosophy-section');
+    const phrases = document.querySelectorAll('.philosophy-phrase');
+    const line = document.getElementById('philosophy-line');
+    if (!section || phrases.length === 0) return;
+
+    const totalPhrases = phrases.length;
+
+    phrases.forEach((phrase, i) => {
+      const startPercent = (i / totalPhrases) * 100;
+      const peakPercent = startPercent + (50 / totalPhrases);
+      const endPercent = ((i + 1) / totalPhrases) * 100;
+
+      // Fade in
+      ScrollTrigger.create({
+        trigger: section,
+        start: `${startPercent}% top`,
+        end: `${peakPercent}% top`,
+        scrub: true,
+        onUpdate: (self) => {
+          gsap.set(phrase, {
+            opacity: self.progress,
+            scale: 0.95 + self.progress * 0.05,
+          });
+        },
+      });
+
+      // Fade out (except last phrase)
+      if (i < totalPhrases - 1) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: `${peakPercent}% top`,
+          end: `${endPercent}% top`,
+          scrub: true,
+          onUpdate: (self) => {
+            gsap.set(phrase, {
+              opacity: 1 - self.progress,
+              scale: 1 + self.progress * 0.02,
+            });
+          },
+        });
+      }
+    });
+
+    // Last phrase stays and gold line appears
+    ScrollTrigger.create({
+      trigger: section,
+      start: '85% top',
+      end: '95% top',
+      scrub: true,
+      onUpdate: (self) => {
+        const lastPhrase = phrases[totalPhrases - 1];
+        if (lastPhrase instanceof HTMLElement) {
+          lastPhrase.classList.add('text-gradient-gold');
+        }
+        gsap.set(line, { opacity: self.progress });
+      },
+    });
+  });
+</script>
