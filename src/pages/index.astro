@@ -66,33 +66,31 @@ const bizItems = businesses.contents.length > 0 ? businesses.contents : fallback
 
   <PhilosophySection />
 
-  <!-- Business -->
-  <section class="py-28">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="mb-16 fade-in">
-        <p class="section-label mb-4">Business</p>
-        <div class="flex items-end justify-between">
-          <h2 class="heading-serif text-3xl md:text-4xl">事業紹介</h2>
-          <a
-            href="/business"
-            class="hidden md:inline-flex items-center gap-4 text-accent text-[11px] tracking-[0.25em] uppercase font-semibold group"
-          >
-            View All
-            <span class="w-8 h-px bg-accent/50 group-hover:w-14 transition-all duration-500"></span>
-          </a>
-        </div>
+  <!-- Business Section -->
+  <section class="py-24 md:py-40 relative" id="business">
+    <!-- Large scrolling background text -->
+    <div class="overflow-hidden mb-16 md:mb-24">
+      <div class="whitespace-nowrap" data-scroll-x>
+        <span class="text-[8rem] md:text-[12rem] lg:text-[16rem] font-serif text-outline tracking-wider">
+          BUSINESS&nbsp;&nbsp;&nbsp;BUSINESS&nbsp;&nbsp;&nbsp;BUSINESS
+        </span>
       </div>
-      <div class="grid md:grid-cols-2 gap-4 stagger">
-        {bizItems.map((biz) => (
-          <BusinessCard
-            name={biz.name}
-            description={biz.description}
-            category={biz.category}
-            image={biz.image}
-            url={biz.url}
-          />
-        ))}
-      </div>
+    </div>
+
+    <div class="metallic-line mb-16 md:mb-24"></div>
+
+    <!-- Business Cards -->
+    <div class="flex flex-col gap-0">
+      {bizItems.map((biz, i) => (
+        <BusinessCard
+          name={biz.name}
+          description={biz.description}
+          category={biz.category}
+          image={biz.image}
+          url={biz.url}
+          index={i}
+        />
+      ))}
     </div>
   </section>
 
@@ -100,11 +98,11 @@ const bizItems = businesses.contents.length > 0 ? businesses.contents : fallback
   {blogs.contents.length > 0 && (
     <section class="py-28 border-t border-border/30">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-16 fade-in">
+        <div class="mb-16 gsap-fade-up">
           <p class="section-label mb-4">Blog</p>
           <h2 class="heading-serif text-3xl md:text-4xl">最新の記事</h2>
         </div>
-        <div class="grid md:grid-cols-3 gap-5 stagger">
+        <div class="grid md:grid-cols-3 gap-5" data-stagger-children>
           {blogs.contents.map((post) => (
             <BlogCard
               slug={post.id}
@@ -124,26 +122,4 @@ const bizItems = businesses.contents.length > 0 ? businesses.contents : fallback
 
   <!-- Recruit -->
   <RecruitSection />
-
-  <!-- Contact CTA -->
-  <section class="relative py-36 overflow-hidden">
-    <div class="absolute inset-0">
-      <img
-        src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80"
-        alt=""
-        class="w-full h-full object-cover opacity-15"
-        aria-hidden="true"
-      />
-      <div class="absolute inset-0 bg-bg/70"></div>
-    </div>
-    <div class="relative z-10 text-center px-6 fade-in">
-      <p class="section-label mb-6">Contact</p>
-      <h2 class="heading-serif text-3xl md:text-4xl mb-6">お問い合わせ</h2>
-      <p class="text-text-sub text-sm mb-12 max-w-lg mx-auto leading-[2]">
-        事業に関するお問い合わせ、取材依頼など、<br class="hidden md:block" />
-        お気軽にご連絡ください。
-      </p>
-      <a href="/contact" class="btn-luxury-filled">Contact Us</a>
-    </div>
-  </section>
 </BaseLayout>

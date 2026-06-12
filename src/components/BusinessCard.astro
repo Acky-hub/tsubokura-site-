@@ -1,43 +1,57 @@
 ---
-// src/components/BusinessCard.astro
-// Cinematic overlay card — saunachelin-style
 interface Props {
   name: string;
   description: string;
   category?: string;
   image?: string;
   url?: string;
+  index: number;
 }
-const { name, description, category, image, url } = Astro.props;
+
+const { name, description, category, image, url, index } = Astro.props;
+const isEven = index % 2 === 0;
+const animClass = isEven ? 'gsap-fade-left' : 'gsap-fade-right';
+const hasImage = image && !image.includes('unsplash');
 ---
-<a
-  href={url || '#'}
-  target={url ? '_blank' : undefined}
-  rel={url ? 'noopener noreferrer' : undefined}
-  class="group block relative overflow-hidden img-zoom"
->
-  <!-- Image -->
-  <div class="aspect-[16/10] bg-bg-card overflow-hidden">
-    {image ? (
+
+<div class={`grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-0 items-stretch ${animClass}`}>
+  <!-- Image Side -->
+  <div class={`relative overflow-hidden aspect-[16/10] md:aspect-auto md:min-h-[500px] ${!isEven ? 'md:order-2' : ''}`}>
+    {hasImage ? (
       <img
         src={image}
         alt={name}
-        class="w-full h-full object-cover opacity-70 group-hover:opacity-90"
+        class="w-full h-full object-cover img-zoom"
+        loading="lazy"
       />
     ) : (
-      <div class="w-full h-full bg-gradient-to-br from-bg-card to-border"></div>
+      <div class="w-full h-full bg-gradient-to-br from-bg-section to-bg-card flex items-center justify-center">
+        <span class="font-serif text-4xl md:text-5xl text-outline tracking-wider">
+          {name}
+        </span>
+      </div>
     )}
+    <div class="absolute inset-0 bg-gradient-to-t from-bg/60 to-transparent hover:opacity-40 transition-opacity duration-500"></div>
   </div>
 
-  <!-- Overlay -->
-  <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-8 bg-gradient-to-t from-bg via-bg/50 to-transparent">
+  <!-- Text Side -->
+  <div class={`flex flex-col justify-center p-8 md:p-16 ${!isEven ? 'md:order-1' : ''}`}>
     {category && (
-      <span class="section-label mb-3">{category}</span>
+      <p class="section-label mb-4">{category}</p>
     )}
-    <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-accent transition-colors duration-300">{name}</h3>
-    <p class="text-text-sub text-sm leading-relaxed opacity-80">{description}</p>
+    <h3 class="heading-serif text-2xl md:text-4xl mb-4">{name}</h3>
+    <p class="text-sm text-text-sub leading-loose mb-8">{description}</p>
+    {url && (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-accent hover:text-silver-light transition-colors duration-300 group"
+        data-cursor-hover
+      >
+        View More
+        <span class="block w-8 h-[1px] bg-accent group-hover:w-12 transition-all duration-300"></span>
+      </a>
+    )}
   </div>
-
-  <!-- Bottom accent line -->
-  <div class="absolute bottom-0 left-0 w-0 h-[2px] bg-accent group-hover:w-full transition-all duration-600"></div>
-</a>
+</div>
