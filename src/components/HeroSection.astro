@@ -33,7 +33,7 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function initHero() {
     const heroName = document.querySelector('.hero-name');
     const heroSub = document.querySelector('.hero-sub');
     const scrollIndicator = document.getElementById('scroll-indicator');
@@ -94,5 +94,11 @@
         scrub: 1,
       },
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHero);
+  } else {
+    initHero();
+  }
 </script>
