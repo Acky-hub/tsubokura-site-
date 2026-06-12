@@ -1,17 +1,24 @@
 ---
-// src/components/Footer.astro
 import SnsLinks from './SnsLinks.astro';
 ---
-<footer class="py-12 border-t border-border/30">
+
+<footer class="py-16 border-t border-border">
   <div class="max-w-5xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+      <!-- Left: Logo + Email -->
       <div class="text-center md:text-left">
-        <p class="text-sm font-bold tracking-wider mb-1">TSUBOKURA HIDEYUKI</p>
-        <p class="text-text-sub text-xs">株式会社ヴィクトワール 代表取締役</p>
+        <span class="font-serif text-xl text-gradient-metallic tracking-wider">HT</span>
+        <p class="text-[11px] text-text-sub mt-2 tracking-wider">
+          info@tsubokurahideyuki.com
+        </p>
       </div>
+
+      <!-- Center: SNS -->
       <SnsLinks />
-      <p class="text-text-sub text-[10px] tracking-wider">
-        &copy; {new Date().getFullYear()} Tsubokura Hideyuki. All rights reserved.
+
+      <!-- Right: Copyright -->
+      <p class="text-[10px] text-text-sub/50 tracking-wider">
+        &copy; 2026 Hideyuki Tsubokura
       </p>
     </div>
   </div>

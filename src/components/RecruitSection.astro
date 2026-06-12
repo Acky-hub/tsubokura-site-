@@ -1,90 +1,19 @@
----
-// src/components/RecruitSection.astro
-const positions = [
-  {
-    title: '飲食スタッフ',
-    location: '岡山市北区（にこ家）',
-    type: '正社員 / アルバイト',
-  },
-  {
-    title: '美容スタッフ',
-    location: '大阪 / 岡山（Labradorite）',
-    type: '正社員 / 業務委託',
-  },
-  {
-    title: 'サウナスタッフ',
-    location: '岡山市北区（DD SAUNA）',
-    type: '正社員 / アルバイト',
-  },
-];
----
-<section id="recruit" class="relative py-32 overflow-hidden">
-  <div class="absolute inset-0">
-    <img
-      src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&q=80"
-      alt=""
-      class="w-full h-full object-cover opacity-15"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-bg/70"></div>
-  </div>
+<section class="py-24 md:py-40 relative noise-bg">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <!-- Large outline text -->
+    <h2 class="text-[4rem] md:text-[8rem] font-serif text-outline tracking-wider mb-8 gsap-fade-up">
+      JOIN US
+    </h2>
 
-  <div class="relative z-10 max-w-5xl mx-auto px-6">
-    <!-- Headline -->
-    <div class="text-center mb-16 fade-in">
-      <p class="section-label mb-4">Recruit</p>
-      <h2 class="heading-serif text-4xl md:text-5xl mb-6">仲間を求めています</h2>
-      <div class="gold-line w-16 mx-auto"></div>
-    </div>
+    <div class="metallic-line-gold w-16 mx-auto mb-10"></div>
 
-    <!-- Message -->
-    <div class="max-w-2xl mx-auto mb-20 fade-in">
-      <blockquote class="text-center">
-        <p class="heading-serif text-xl md:text-2xl leading-[2] mb-8 text-text/90">
-          「一緒に、まだ誰もやっていないことを<br />やりませんか。」
-        </p>
-      </blockquote>
-      <div class="text-text-sub text-sm leading-[2.2] space-y-4">
-        <p>
-          僕たちヴィクトワールは、飲食、美容、サウナ、食品ブランドと、
-          まったく異なる4つの領域で事業を展開しています。
-          共通しているのはたった一つ。
-          <span class="text-text">「目の前の人を本気で喜ばせたい」</span>という想いです。
-        </p>
-        <p>
-          経験は問いません。学歴も関係ない。
-          大切なのは、<span class="text-text">「今の自分を変えたい」という熱量</span>があるかどうか。
-          僕自身、何もないところから這い上がってきました。
-          だからこそ、挑戦する人の気持ちが分かる。
-        </p>
-        <p>
-          ここには、頑張った分だけ正当に評価される環境があります。
-          年齢も性別も関係なく、<span class="text-text">実力と情熱で勝負できる場所</span>です。
-          やる気さえあれば、半年で店長、1年で独立——そんな未来も本気で目指せます。
-        </p>
-        <p>
-          岡山から全国へ。僕たちと一緒に、
-          <span class="text-text">「あなたにしかできない仕事」</span>を見つけませんか。
-        </p>
-      </div>
-      <p class="text-accent text-sm mt-8 text-right">—— 坪倉秀行</p>
-    </div>
+    <p class="text-sm md:text-base text-text-sub leading-loose max-w-2xl mx-auto mb-12 gsap-fade-up">
+      私たちは、岡山から新しい価値を生み出す仲間を探しています。<br />
+      飲食・美容・ウェルネス — あなたの情熱を、ここで。
+    </p>
 
-    <!-- Positions -->
-    <div class="grid md:grid-cols-3 gap-4 stagger">
-      {positions.map((pos) => (
-        <div class="border border-border/50 p-8 hover:border-accent/40 transition-all duration-500 card-glow text-center">
-          <h3 class="font-semibold text-lg mb-2">{pos.title}</h3>
-          <p class="text-text-sub text-xs mb-4">{pos.location}</p>
-          <span class="text-accent text-[10px] tracking-wider border border-accent/30 px-4 py-1.5 inline-block">{pos.type}</span>
-        </div>
-      ))}
-    </div>
-
-    <!-- CTA -->
-    <div class="text-center mt-14 fade-in">
-      <p class="text-text-sub text-sm mb-6">まずは気軽にお話ししましょう。</p>
-      <a href="/contact" class="btn-luxury-filled">応募・お問い合わせ</a>
-    </div>
+    <a href="/contact" class="btn-luxury btn-luxury-outline gsap-fade-up" data-cursor-hover>
+      Contact Us
+    </a>
   </div>
 </section>
