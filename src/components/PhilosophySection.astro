@@ -32,7 +32,7 @@ const phrases = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function initPhilosophy() {
     const section = document.getElementById('philosophy-section');
     const phrases = document.querySelectorAll('.philosophy-phrase');
     const line = document.getElementById('philosophy-line');
@@ -90,5 +90,10 @@ const phrases = [
         gsap.set(line, { opacity: self.progress });
       },
     });
-  });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhilosophy);
+  } else {
+    initPhilosophy();
+  }
 </script>

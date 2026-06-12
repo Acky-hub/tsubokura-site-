@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-document.addEventListener('DOMContentLoaded', () => {
+function initAnimations() {
   // Sync ScrollTrigger with Lenis
   if (window.__lenis) {
     window.__lenis.on('scroll', ScrollTrigger.update);
@@ -141,4 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     );
   });
-});
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAnimations);
+} else {
+  initAnimations();
+}

@@ -52,7 +52,7 @@ const navItems = [
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function initHeader() {
     const header = document.getElementById('site-header');
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -99,5 +99,10 @@ const navItems = [
         menuToggle?.click();
       });
     });
-  });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeader);
+  } else {
+    initHeader();
+  }
 </script>

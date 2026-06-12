@@ -5,7 +5,7 @@
 <div class="cursor-dot" id="cursor-dot"></div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function initCursor() {
     if (window.innerWidth < 1140) return;
 
     const cursor = document.getElementById('cursor-dot');
@@ -34,5 +34,10 @@
       el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
-  });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCursor);
+  } else {
+    initCursor();
+  }
 </script>
