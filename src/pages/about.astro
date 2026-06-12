@@ -4,23 +4,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="About" description="坪倉秀行のプロフィール・経歴・メッセージ">
   <!-- Hero -->
+  <section class="pt-32 pb-20 md:pt-40 md:pb-32">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="section-label mb-6 gsap-fade-up">About</p>
+      <h1 class="heading-serif text-4xl md:text-6xl mb-6 text-gradient-metallic gsap-fade-up">
+        坪倉 秀行
+      </h1>
+      <p class="text-[11px] tracking-[0.4em] uppercase text-text-sub gsap-fade-up">
+        Hideyuki Tsubokura &mdash; CEO &amp; Founder
+      </p>
+    </div>
+  </section>
+
+  <div class="metallic-line max-w-5xl mx-auto"></div>
+
+  <!-- Profile -->
   <section class="py-24 md:py-32">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="grid md:grid-cols-2 gap-16 items-center fade-in">
-        <div class="relative">
-          <div class="aspect-[3/4] overflow-hidden bg-[#141414] rounded-sm">
-            <img src="/images/hero.jpg" alt="坪倉秀行" class="w-full h-full object-cover mix-blend-luminosity opacity-90" />
-            <div class="absolute inset-0 bg-[#141414]/15"></div>
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="relative gsap-fade-left">
+          <div class="aspect-[3/4] overflow-hidden">
+            <img src="/images/hero.jpg" alt="坪倉秀行" class="w-full h-full object-cover mix-blend-luminosity hover:mix-blend-normal transition-all duration-700" />
           </div>
-          <div class="absolute -bottom-4 -right-4 w-32 h-32 border border-accent opacity-30"></div>
         </div>
-        <div>
-          <p class="section-label mb-4">About</p>
-          <h1 class="heading-serif text-4xl md:text-5xl mb-4">
-            <span class="text-gradient">坪倉秀行</span>
-          </h1>
+        <div class="gsap-fade-right">
           <p class="text-accent/80 text-xs tracking-[0.2em] uppercase mb-8">Representative Director — Victoire Corporation</p>
-          <div class="w-8 h-px bg-accent/50 mb-8"></div>
+          <div class="metallic-line-gold w-8 mb-8"></div>
           <p class="text-text-sub leading-[2] text-[15px] mb-5">
             岡山を拠点に、飲食・美容・ウェルネス・食品ブランドと、
             4つの異なる領域で事業を展開する株式会社ヴィクトワール代表取締役。
@@ -34,94 +43,97 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <div class="gold-line max-w-5xl mx-auto"></div>
+  <div class="metallic-line max-w-5xl mx-auto"></div>
 
   <!-- Philosophy -->
   <section class="py-24">
-    <div class="max-w-3xl mx-auto px-6 text-center fade-in">
-      <p class="section-label mb-8">Philosophy</p>
-      <h2 class="heading-serif text-2xl md:text-3xl leading-relaxed mb-8">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="section-label mb-8 gsap-fade-up">Philosophy</p>
+      <h2 class="heading-serif text-2xl md:text-3xl leading-relaxed mb-8 gsap-fade-up">
         「誰かの"いい一日"をつくる。<br />それが、すべての原点。」
       </h2>
-      <div class="gold-line w-16 mx-auto mb-10"></div>
-      <p class="text-text-sub leading-[2.2] text-sm mb-6">
+      <div class="metallic-line-gold w-16 mx-auto mb-10"></div>
+      <p class="text-text-sub leading-[2.2] text-sm mb-6 gsap-fade-up">
         飲食も、美容も、サウナも、本質は同じだと考えています。
         目の前の一人を、心から満足させること。
         「来てよかった」「また来たい」と思ってもらえる瞬間を、一つでも多くつくること。
       </p>
-      <p class="text-text-sub leading-[2.2] text-sm">
+      <p class="text-text-sub leading-[2.2] text-sm gsap-fade-up">
         事業の数や規模ではなく、一つひとつの現場で生まれる「ありがとう」の質にこだわる。
         それがヴィクトワールの変わらない信念です。
       </p>
     </div>
   </section>
 
-  <div class="gold-line max-w-5xl mx-auto"></div>
+  <div class="metallic-line max-w-5xl mx-auto"></div>
 
-  <!-- Career -->
-  <section class="py-24">
-    <div class="max-w-3xl mx-auto px-6 fade-in">
-      <p class="section-label mb-8 text-center">Career</p>
-      <h2 class="heading-serif text-2xl md:text-3xl mb-12 text-center">経歴</h2>
-      <div class="space-y-10 border-l border-border/50 pl-8">
-        <div class="relative">
-          <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="text-accent text-xs tracking-wider mb-1">起業</p>
-          <p class="font-semibold text-lg">株式会社ヴィクトワール 設立</p>
-          <p class="text-text-sub text-sm mt-2 leading-relaxed">
-            岡山市にて法人を設立。「地域に必要とされる事業を、自分の手で創る」という
-            志のもと、起業の道を選ぶ。
-          </p>
+  <!-- Career Timeline -->
+  <section class="py-24 md:py-40">
+    <div class="max-w-4xl mx-auto px-6">
+      <p class="section-label text-center mb-4 gsap-fade-up">Career</p>
+      <h2 class="heading-serif text-3xl md:text-4xl text-center mb-20 gsap-fade-up">Timeline</h2>
+
+      <div class="relative">
+        <!-- Metallic vertical line -->
+        <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-silver/30 to-transparent"></div>
+
+        <div class="relative flex items-start mb-16 md:mb-20 md:flex-row gsap-fade-up">
+          <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-silver border-2 border-bg -translate-x-1/2 mt-2 z-10"></div>
+          <div class="ml-16 md:ml-0 md:w-1/2 md:pr-16 md:text-right">
+            <span class="text-[11px] tracking-[0.3em] text-accent">2018</span>
+            <h3 class="heading-serif text-xl md:text-2xl mt-2 mb-2">株式会社ヴィクトワール 設立</h3>
+            <p class="text-sm text-text-sub">岡山市にて法人を設立。起業の道を選ぶ。</p>
+          </div>
         </div>
-        <div class="relative">
-          <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="text-accent text-xs tracking-wider mb-1">飲食事業</p>
-          <p class="font-semibold text-lg">定食酒場 にこ家 開業</p>
-          <p class="text-text-sub text-sm mt-2 leading-relaxed">
-            岡山市北区奥田にオープン。「毎日食べたくなる、心のこもった家庭料理」をコンセプトに、
-            地域の常連客に愛される店づくりを追求。
-          </p>
+
+        <div class="relative flex items-start mb-16 md:mb-20 md:flex-row-reverse gsap-fade-up">
+          <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-silver border-2 border-bg -translate-x-1/2 mt-2 z-10"></div>
+          <div class="ml-16 md:ml-0 md:w-1/2 md:pl-16">
+            <span class="text-[11px] tracking-[0.3em] text-accent">2019</span>
+            <h3 class="heading-serif text-xl md:text-2xl mt-2 mb-2">定食酒場 にこ家 開業</h3>
+            <p class="text-sm text-text-sub">心のこもった家庭料理で地域に愛される店づくり。</p>
+          </div>
         </div>
-        <div class="relative">
-          <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="text-accent text-xs tracking-wider mb-1">美容事業</p>
-          <p class="font-semibold text-lg">Labradorite 開業</p>
-          <p class="text-text-sub text-sm mt-2 leading-relaxed">
-            大阪・岡山を拠点に、マツエク・リラクゼーション・ホットストーンを提供する
-            ビューティーサロンを展開。一人ひとりに寄り添った施術で支持を集める。
-          </p>
+
+        <div class="relative flex items-start mb-16 md:mb-20 md:flex-row gsap-fade-up">
+          <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-silver border-2 border-bg -translate-x-1/2 mt-2 z-10"></div>
+          <div class="ml-16 md:ml-0 md:w-1/2 md:pr-16 md:text-right">
+            <span class="text-[11px] tracking-[0.3em] text-accent">2021</span>
+            <h3 class="heading-serif text-xl md:text-2xl mt-2 mb-2">Labradorite 開業</h3>
+            <p class="text-sm text-text-sub">美容・リラクゼーション事業へ進出。</p>
+          </div>
         </div>
-        <div class="relative">
-          <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="text-accent text-xs tracking-wider mb-1">ウェルネス事業</p>
-          <p class="font-semibold text-lg">DD SAUNA 開業</p>
-          <p class="text-text-sub text-sm mt-2 leading-relaxed">
-            岡山市北区に完全個室のプライベートラグジュアリーサウナ施設をオープン。
-            「誰にも邪魔されない、上質な"ととのい"の贅沢」を提案。
-          </p>
+
+        <div class="relative flex items-start mb-16 md:mb-20 md:flex-row-reverse gsap-fade-up">
+          <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-silver border-2 border-bg -translate-x-1/2 mt-2 z-10"></div>
+          <div class="ml-16 md:ml-0 md:w-1/2 md:pl-16">
+            <span class="text-[11px] tracking-[0.3em] text-accent">2023</span>
+            <h3 class="heading-serif text-xl md:text-2xl mt-2 mb-2">THE DD SAUNA 開業</h3>
+            <p class="text-sm text-text-sub">岡山初の大型プライベートラグジュアリーサウナ。</p>
+          </div>
         </div>
-        <div class="relative">
-          <div class="absolute -left-[33px] w-2 h-2 rounded-full bg-accent mt-2"></div>
-          <p class="text-accent text-xs tracking-wider mb-1">食品ブランド</p>
-          <p class="font-semibold text-lg">AROMA TRUFFLE 福岡店 出店</p>
-          <p class="text-text-sub text-sm mt-2 leading-relaxed">
-            福岡・岩田屋本店にトリュフ香るグルメブランド「AROMA TRUFFLE」を出店。
-            グループの事業領域をさらに拡大。
-          </p>
+
+        <div class="relative flex items-start md:flex-row gsap-fade-up">
+          <div class="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-silver border-2 border-bg -translate-x-1/2 mt-2 z-10"></div>
+          <div class="ml-16 md:ml-0 md:w-1/2 md:pr-16 md:text-right">
+            <span class="text-[11px] tracking-[0.3em] text-accent">2024</span>
+            <h3 class="heading-serif text-xl md:text-2xl mt-2 mb-2">AROMA TRUFFLE 福岡店 出店</h3>
+            <p class="text-sm text-text-sub">GSIX発の食品ブランドを全国展開。</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="gold-line max-w-5xl mx-auto"></div>
+  <div class="metallic-line max-w-5xl mx-auto"></div>
 
   <!-- Message -->
   <section class="py-24">
-    <div class="max-w-3xl mx-auto px-6 fade-in">
-      <p class="section-label mb-8 text-center">Message</p>
-      <h2 class="heading-serif text-2xl md:text-3xl mb-12 text-center">代表メッセージ</h2>
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="section-label mb-8 text-center gsap-fade-up">Message</p>
+      <h2 class="heading-serif text-2xl md:text-3xl mb-12 text-center text-gradient-gold gsap-fade-up">代表メッセージ</h2>
 
-      <div class="text-text-sub text-sm leading-[2.2] space-y-6 mb-12">
+      <div class="text-text-sub text-sm leading-[2.2] space-y-6 mb-12 gsap-fade-up">
         <p>
           僕は、特別な才能があったわけではありません。
           学歴もない。コネもない。資金もない。
@@ -150,9 +162,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </p>
       </div>
 
-      <div class="text-right">
+      <div class="text-right gsap-fade-up">
         <p class="text-accent text-sm mb-1">株式会社ヴィクトワール 代表取締役</p>
-        <p class="heading-serif text-2xl text-gradient">坪倉秀行</p>
+        <p class="heading-serif text-2xl text-gradient-gold">坪倉秀行</p>
       </div>
     </div>
   </section>
