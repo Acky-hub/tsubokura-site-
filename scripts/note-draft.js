@@ -6,7 +6,66 @@
  */
 
 const { chromium } = require('playwright');
+const { createCanvas } = require('canvas');
 const path = require('path');
+const fs = require('fs');
+
+// サムネイル画像を生成（白背景・黒文字・タイトル表示）
+function generateThumbnail(title) {
+  const width = 1280;
+  const height = 670;
+  const canvas = createCanvas(width, height);
+  const ctx = canvas.getContext('2d');
+
+  // 白背景
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+
+  // タイトルを描画
+  ctx.fillStyle = '#111111';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // フォントサイズを自動調整（長いタイトルは小さく）
+  let fontSize = 56;
+  if (title.length > 25) fontSize = 48;
+  if (title.length > 35) fontSize = 40;
+  ctx.font = `bold ${fontSize}px "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif`;
+
+  // テキストを折り返し
+  const maxWidth = width - 160;
+  const lines = [];
+  let currentLine = '';
+  for (const char of title) {
+    const testLine = currentLine + char;
+    if (ctx.measureText(testLine).width > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = char;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  const lineHeight = fontSize * 1.6;
+  const startY = height / 2 - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((line, i) => {
+    ctx.fillText(line, width / 2, startY + i * lineHeight);
+  });
+
+  // 下部に細いライン + 名前
+  ctx.fillStyle = '#999999';
+  ctx.font = '20px "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif';
+  ctx.fillText('坪倉秀行 / tsubokurahideyuki.com', width / 2, height - 50);
+
+  // 上下にアクセントライン
+  ctx.fillStyle = '#dddddd';
+  ctx.fillRect(width / 2 - 40, height - 80, 80, 1);
+
+  const filePath = path.resolve(__dirname, '..', 'logs', `note-thumbnail-${Date.now()}.png`);
+  fs.writeFileSync(filePath, canvas.toBuffer('image/png'));
+  return filePath;
+}
 
 async function createNoteDraft(title, content, hashtags) {
   const email = process.env.NOTE_EMAIL;
@@ -66,7 +125,43 @@ async function createNoteDraft(title, content, hashtags) {
       await page.waitForTimeout(500);
     }
 
-    // 5. タイトル入力
+    // 5. サムネイル画像を生成・アップロード
+    try {
+      console.log('  note: サムネイル生成中...');
+      const thumbnailPath = generateThumbnail(title);
+      console.log(`  note: サムネイル → ${thumbnailPath}`);
+
+      // アイキャッチ画像エリアにファイルをドラッグ&ドロップで設定
+      const eyecatchArea = page.locator('[data-dragging]').first();
+      if (await eyecatchArea.isVisible({ timeout: 3000 }).catch(() => false)) {
+        // ファイルをDataTransferでドロップイベントとして送信
+        const fileBuffer = fs.readFileSync(thumbnailPath);
+        await eyecatchArea.evaluate(async (el, data) => {
+          const blob = new Blob([new Uint8Array(data)], { type: 'image/png' });
+          const file = new File([blob], 'thumbnail.png', { type: 'image/png' });
+          const dt = new DataTransfer();
+          dt.items.add(file);
+
+          el.dispatchEvent(new DragEvent('dragenter', { dataTransfer: dt, bubbles: true }));
+          el.dispatchEvent(new DragEvent('dragover', { dataTransfer: dt, bubbles: true }));
+          el.dispatchEvent(new DragEvent('drop', { dataTransfer: dt, bubbles: true }));
+        }, Array.from(fileBuffer));
+        await page.waitForTimeout(2000);
+        // クロップモーダルが表示されたら「完了」ボタンをクリック
+        const cropDoneBtn = page.locator('button:has-text("保存")').last();
+        if (await cropDoneBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+          await cropDoneBtn.click();
+          await page.waitForTimeout(3000);
+        }
+        console.log('  note: サムネイルアップロード完了');
+      } else {
+        console.log('  note: アイキャッチエリアが見つかりません（手動設定してください）');
+      }
+    } catch (e) {
+      console.log(`  note: サムネイル設定スキップ — ${e.message}`);
+    }
+
+    // 6. タイトル入力
     console.log('  note: 記事入力中...');
     // タイトルフィールドは textarea[placeholder="記事タイトル"]
     const titleInput = page.locator('textarea[placeholder="記事タイトル"]').first();
