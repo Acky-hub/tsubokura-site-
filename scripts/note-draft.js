@@ -96,13 +96,32 @@ async function createNoteDraft(title, content, hashtags) {
     console.log('  note: ログイン中...');
 
     if (hasCookies) {
-      // Cookieでログイン確認
-      await page.goto('https://note.com/');
-      await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(2000);
+      // Cookieでログイン — 直接エディタに遷移を試みる
+      await page.goto('https://note.com/notes/new');
+      await page.waitForTimeout(5000);
       const url = page.url();
       if (url.includes('login')) {
-        throw new Error('Cookie期限切れ: node scripts/note-setup.js を再実行してください');
+        // Cookie期限切れ — 通常ログインにフォールバック
+        console.log('  note: Cookie期限切れ、通常ログインを試行...');
+        await page.goto('https://note.com/login?redirectPath=%2F');
+        await page.waitForLoadState('networkidle');
+        const emailInput = page.locator('#email').first();
+        await emailInput.fill(email);
+        const passwordInput = page.locator('input[type="password"]').first();
+        await passwordInput.fill(password);
+        const loginButton = page.locator('button:has-text("ログイン")').first();
+        await loginButton.click();
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        if (page.url().includes('login')) {
+          throw new Error('ログイン失敗: node scripts/note-setup.js でCookieを再取得してください');
+        }
+        // Cookieを更新
+        const storageState = await context.storageState();
+        fs.writeFileSync(COOKIE_PATH, JSON.stringify(storageState, null, 2));
+        // エディタに再遷移
+        await page.goto('https://note.com/notes/new');
+        await page.waitForTimeout(5000);
       }
       console.log('  note: Cookieログイン成功');
     } else {
@@ -132,12 +151,15 @@ async function createNoteDraft(title, content, hashtags) {
       fs.writeFileSync(COOKIE_PATH, JSON.stringify(storageState, null, 2));
     }
 
-    // 4. 新規記事作成ページへ移動 → editor.note.com に遷移する
-    await page.goto('https://note.com/notes/new');
-    await page.waitForTimeout(5000); // SPAのリダイレクト完了を待つ
+    // 4. 新規記事作成ページへ移動（Cookie認証時は既に遷移済みの場合あり）
+    const currentEditorUrl = page.url();
+    if (!currentEditorUrl.includes('editor.note.com')) {
+      await page.goto('https://note.com/notes/new');
+      await page.waitForTimeout(5000);
+    }
 
     const editorUrl = page.url();
-    if (!editorUrl.includes('editor.note.com')) {
+    if (!editorUrl.includes('editor.note.com') && !editorUrl.includes('note.com/notes')) {
       throw new Error(`エディタページに遷移できませんでした: ${editorUrl}`);
     }
 
