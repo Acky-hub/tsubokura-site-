@@ -147,6 +147,7 @@ async function generateArticle(topic, category) {
 - <h1>は不要（タイトルは別途設定する）
 - 具体的なエピソードや数字を交えて説得力を持たせる
 - 最後に読者への呼びかけやメッセージで締める
+- 絵文字は絶対に使用しないこと（文字化けの原因になるため）
 
 ## 出力形式
 以下のJSON形式で出力してください。他のテキストは一切含めないでください。
@@ -253,7 +254,7 @@ async function rewriteForPlatform(article, platform) {
 - 内容の趣旨は維持しつつ、文体・表現・見出しを大きく変える
 - 機械的な言い換えではなく、別の人が同じテーマで書いたかのように
 - 「坪倉秀行」のフルネームは2〜3回含める（SEO）
-- 文末に以下を追加: "\\n\\n---\\n坪倉秀行の公式サイト: https://tsubokurahideyuki.com"
+- 絵文字は絶対に使用しないこと（文字化けの原因になるため）
 - HTML形式で出力（<h2>, <p>, <strong> 等を使用、<h1>は不要）
 
 ## 元記事
@@ -266,8 +267,11 @@ ${article.content}
 
 {
   "title": "リライト後のタイトル（30文字以内）",
-  "content": "<h2>見出し</h2><p>本文...</p>..."
-}`;
+  "content": "<h2>見出し</h2><p>本文...</p>...",
+  "hashtags": ["坪倉秀行", "岡山", "起業", "経営者", "ヴィクトワール"]
+}
+
+hashtagsは記事内容に合った5〜8個のハッシュタグ。必ず「坪倉秀行」を含める。`;
 
   const body = JSON.stringify({
     model: 'claude-sonnet-4-20250514',
@@ -366,7 +370,7 @@ async function main() {
     console.log(`  note版タイトル: ${noteArticle.title}`);
 
     const createNoteDraft = require('./note-draft');
-    const noteResult = await createNoteDraft(noteArticle.title, noteArticle.content);
+    const noteResult = await createNoteDraft(noteArticle.title, noteArticle.content, noteArticle.hashtags);
     if (noteResult.success) {
       console.log(`  note: 下書き保存成功 ✓`);
     } else {
@@ -384,9 +388,12 @@ async function main() {
 
     const dateStr = new Date().toISOString().slice(0, 10);
     const outputPath = require('path').resolve(__dirname, '..', 'logs', `ameblo-post-${dateStr}.html`);
+    const hashtagsHtml = (amebloArticle.hashtags || []).map(t => `#${t}`).join(' ');
+    const bannerHtml = `<hr><p><strong>坪倉秀行 公式サイト</strong>: <a href="https://tsubokurahideyuki.com">https://tsubokurahideyuki.com</a><br>X: <a href="https://x.com/hide_tsubokura">@hide_tsubokura</a> / Instagram: <a href="https://www.instagram.com/hide_tsubo1981/">@hide_tsubo1981</a></p>`;
     const outputContent = `<!--
 アメブロ投稿用（手動コピペ）
 タイトル: ${amebloArticle.title}
+ハッシュタグ: ${hashtagsHtml}
 日時: ${new Date().toLocaleString('ja-JP')}
 -->
 
@@ -395,6 +402,10 @@ ${amebloArticle.title}
 
 <!-- ===== 本文HTML（コピー） ===== -->
 ${amebloArticle.content}
+${bannerHtml}
+
+<!-- ===== ハッシュタグ（コピー） ===== -->
+${hashtagsHtml}
 `;
     fs.writeFileSync(outputPath, outputContent, 'utf-8');
     console.log(`  ameblo: 投稿用ファイル出力 → ${outputPath}`);

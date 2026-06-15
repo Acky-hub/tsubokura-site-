@@ -8,7 +8,7 @@
 const { chromium } = require('playwright');
 const path = require('path');
 
-async function createNoteDraft(title, content) {
+async function createNoteDraft(title, content, hashtags) {
   const email = process.env.NOTE_EMAIL;
   const password = process.env.NOTE_PASSWORD;
 
@@ -89,12 +89,38 @@ async function createNoteDraft(title, content) {
       .replace(/\n{3,}/g, '\n\n')
       .trim();
 
+    // サイトバナーを本文末尾に追加
+    const contentWithBanner = plainContent + '\n\n---\n\n' +
+      '坪倉秀行 公式サイト: https://tsubokurahideyuki.com\n' +
+      'X: https://x.com/hide_tsubokura\n' +
+      'Instagram: https://www.instagram.com/hide_tsubo1981/';
+
     // ProseMirrorエディタ (data-placeholder="ご自由にお書きください。")
     const bodyEditor = page.locator('.ProseMirror[contenteditable="true"]').first();
     await bodyEditor.click();
-    await bodyEditor.fill(plainContent);
+    await bodyEditor.fill(contentWithBanner);
 
-    // 7. 「下書き保存」ボタンをクリック
+    // 7. ハッシュタグを入力
+    if (hashtags && hashtags.length > 0) {
+      try {
+        console.log('  note: ハッシュタグ入力中...');
+        // noteのハッシュタグ入力欄を探す
+        const hashtagInput = page.locator('input[placeholder*="タグ"], input[placeholder*="ハッシュタグ"], [data-testid="hashtag-input"]').first();
+        if (await hashtagInput.isVisible({ timeout: 3000 }).catch(() => false)) {
+          for (const tag of hashtags) {
+            await hashtagInput.fill(tag);
+            await page.keyboard.press('Enter');
+            await page.waitForTimeout(500);
+          }
+        } else {
+          console.log('  note: ハッシュタグ入力欄が見つかりません（公開時に手動追加してください）');
+        }
+      } catch (e) {
+        console.log(`  note: ハッシュタグ入力スキップ — ${e.message}`);
+      }
+    }
+
+    // 8. 「下書き保存」ボタンをクリック
     const saveBtn = page.locator('button:has-text("下書き保存")').first();
     if (await saveBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
       await saveBtn.click();
@@ -141,8 +167,9 @@ if (require.main === module) {
 
   const testTitle = '【テスト】坪倉秀行のテスト記事';
   const testContent = '<h2>テスト見出し</h2><p>これはテスト記事です。坪倉秀行が書いています。</p>';
+  const testHashtags = ['坪倉秀行', '岡山', 'テスト'];
 
-  createNoteDraft(testTitle, testContent).then((result) => {
+  createNoteDraft(testTitle, testContent, testHashtags).then((result) => {
     console.log('Result:', result);
     process.exit(result.success ? 0 : 1);
   });
