@@ -2,3 +2,5 @@ node_modules/
 dist/
 .env
 .astro/
+logs/ameblo-auth.json
+logs/*.png
