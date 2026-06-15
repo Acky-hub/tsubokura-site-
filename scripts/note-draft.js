@@ -97,10 +97,25 @@ async function createNoteDraft(title, content, hashtags) {
       'X: https://x.com/hide_tsubokura\n' +
       'Instagram: https://www.instagram.com/hide_tsubo1981/';
 
-    // ProseMirrorエディタ (data-placeholder="ご自由にお書きください。")
+    // ProseMirrorエディタ — クリップボード貼り付けで全文入力
     const bodyEditor = page.locator('.ProseMirror[contenteditable="true"]').first();
     await bodyEditor.click();
-    await bodyEditor.fill(contentWithBanner);
+    await page.evaluate((text) => {
+      const editor = document.querySelector('.ProseMirror[contenteditable="true"]');
+      if (editor) {
+        editor.focus();
+        // DataTransferを使ってペーストイベントを発火
+        const dt = new DataTransfer();
+        dt.setData('text/plain', text);
+        const pasteEvent = new ClipboardEvent('paste', {
+          clipboardData: dt,
+          bubbles: true,
+          cancelable: true,
+        });
+        editor.dispatchEvent(pasteEvent);
+      }
+    }, contentWithBanner);
+    await page.waitForTimeout(2000);
 
     // 7. ハッシュタグを入力
     if (hashtags && hashtags.length > 0) {
