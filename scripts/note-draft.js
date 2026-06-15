@@ -257,21 +257,32 @@ async function createNoteDraft(title, content, hashtags) {
     }, contentWithBanner);
     await page.waitForTimeout(2000);
 
-    // 7. ハッシュタグを入力
+    // 7. ハッシュタグを入力（「公開に進む」画面で設定してからキャンセルで戻る）
     if (hashtags && hashtags.length > 0) {
       try {
         console.log('  note: ハッシュタグ入力中...');
-        // noteのハッシュタグ入力欄を探す
-        const hashtagInput = page.locator('input[placeholder*="タグ"], input[placeholder*="ハッシュタグ"], [data-testid="hashtag-input"]').first();
+        // 「公開に進む」ボタンをクリック
+        const publishBtn = page.locator('button:has-text("公開に進む")').first();
+        await publishBtn.click();
+        await page.waitForTimeout(2000);
+
+        // ハッシュタグ入力欄に入力
+        const hashtagInput = page.locator('input[placeholder="ハッシュタグを追加する"]').first();
         if (await hashtagInput.isVisible({ timeout: 3000 }).catch(() => false)) {
           for (const tag of hashtags) {
             await hashtagInput.fill(tag);
             await page.keyboard.press('Enter');
             await page.waitForTimeout(500);
           }
+          console.log(`  note: ハッシュタグ ${hashtags.length}個 設定完了`);
         } else {
-          console.log('  note: ハッシュタグ入力欄が見つかりません（公開時に手動追加してください）');
+          console.log('  note: ハッシュタグ入力欄が見つかりません');
         }
+
+        // 「キャンセル」で公開画面を閉じる（下書きのまま）
+        const cancelBtn = page.locator('button:has-text("キャンセル")').first();
+        await cancelBtn.click();
+        await page.waitForTimeout(1000);
       } catch (e) {
         console.log(`  note: ハッシュタグ入力スキップ — ${e.message}`);
       }
