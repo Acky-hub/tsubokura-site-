@@ -76,15 +76,17 @@ async function createNoteDraft(title, content, hashtags) {
     // 6. 本文入力 — noteのエディタはProseMirror (contenteditable)
     // HTMLをプレーンテキストに変換してから入力
     const plainContent = content
-      .replace(/<h2[^>]*>/gi, '\n\n## ')
+      .replace(/<h2[^>]*>/gi, '\n\n')
       .replace(/<\/h2>/gi, '\n\n')
-      .replace(/<h3[^>]*>/gi, '\n\n### ')
+      .replace(/<h3[^>]*>/gi, '\n\n')
       .replace(/<\/h3>/gi, '\n\n')
       .replace(/<p[^>]*>/gi, '')
       .replace(/<\/p>/gi, '\n\n')
       .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<strong[^>]*>/gi, '**')
-      .replace(/<\/strong>/gi, '**')
+      .replace(/<strong[^>]*>/gi, '')
+      .replace(/<\/strong>/gi, '')
+      .replace(/<em[^>]*>/gi, '')
+      .replace(/<\/em>/gi, '')
       .replace(/<[^>]+>/g, '')
       .replace(/\n{3,}/g, '\n\n')
       .trim();
