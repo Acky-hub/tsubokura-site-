@@ -11,6 +11,7 @@
  */
 
 const https = require('https');
+const fs = require('fs');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 
 // Also load note-automation .env for ANTHROPIC_API_KEY
@@ -239,6 +240,82 @@ async function postToMicroCMS(article) {
   });
 }
 
+// プラットフォーム別にリライト
+async function rewriteForPlatform(article, platform) {
+  const styleGuide = platform === 'note'
+    ? 'です/ます調ベースのカジュアルなエッセイ調。noteの読者に合った親しみやすい書き方。見出しの言い回しも変える。'
+    : 'だ/である調と話し言葉のミックス。段落を短く、テンポよく。アメブロの読者に合った読みやすい書き方。見出しの言い回しも変える。';
+
+  const prompt = `以下のブログ記事を${platform}向けにリライトしてください。
+
+## リライトルール
+- ${styleGuide}
+- 内容の趣旨は維持しつつ、文体・表現・見出しを大きく変える
+- 機械的な言い換えではなく、別の人が同じテーマで書いたかのように
+- 「坪倉秀行」のフルネームは2〜3回含める（SEO）
+- 文末に以下を追加: "\\n\\n---\\n坪倉秀行の公式サイト: https://tsubokurahideyuki.com"
+- HTML形式で出力（<h2>, <p>, <strong> 等を使用、<h1>は不要）
+
+## 元記事
+タイトル: ${article.title}
+本文:
+${article.content}
+
+## 出力形式
+以下のJSON形式で出力。他のテキストは含めないでください。
+
+{
+  "title": "リライト後のタイトル（30文字以内）",
+  "content": "<h2>見出し</h2><p>本文...</p>..."
+}`;
+
+  const body = JSON.stringify({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 4096,
+    messages: [{ role: 'user', content: prompt }],
+  });
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(
+      {
+        hostname: 'api.anthropic.com',
+        path: '/v1/messages',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+        },
+      },
+      (res) => {
+        let data = '';
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => {
+          try {
+            const result = JSON.parse(data);
+            if (result.error) {
+              reject(new Error(result.error.message));
+              return;
+            }
+            const text = result.content[0].text;
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+              reject(new Error('Failed to extract JSON from rewrite response'));
+              return;
+            }
+            resolve(JSON.parse(jsonMatch[0]));
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+    );
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
 // Cloudflare Pages再ビルドをトリガー（空コミットpush）
 async function triggerRebuild() {
   const { execSync } = require('child_process');
@@ -279,7 +356,56 @@ async function main() {
   const result = await postToMicroCMS(article);
   console.log(`投稿完了: ID=${result.id}`);
 
-  // 5. 再ビルドトリガー
+  // 5. note・アメブロに下書き同期
+  console.log('\n--- 下書き同期 ---');
+
+  // note: 自動で下書き保存
+  try {
+    console.log('note用にリライト中...');
+    const noteArticle = await rewriteForPlatform(article, 'note');
+    console.log(`  note版タイトル: ${noteArticle.title}`);
+
+    const createNoteDraft = require('./note-draft');
+    const noteResult = await createNoteDraft(noteArticle.title, noteArticle.content);
+    if (noteResult.success) {
+      console.log(`  note: 下書き保存成功 ✓`);
+    } else {
+      console.warn(`  note: 下書き保存失敗 — ${noteResult.error}`);
+    }
+  } catch (e) {
+    console.warn(`  note: エラー — ${e.message}`);
+  }
+
+  // アメブロ: リライトしてファイル出力（手動コピペ用）
+  try {
+    console.log('アメブロ用にリライト中...');
+    const amebloArticle = await rewriteForPlatform(article, 'ameblo');
+    console.log(`  ameblo版タイトル: ${amebloArticle.title}`);
+
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const outputPath = require('path').resolve(__dirname, '..', 'logs', `ameblo-post-${dateStr}.html`);
+    const outputContent = `<!--
+アメブロ投稿用（手動コピペ）
+タイトル: ${amebloArticle.title}
+日時: ${new Date().toLocaleString('ja-JP')}
+-->
+
+<!-- ===== タイトル（コピー） ===== -->
+${amebloArticle.title}
+
+<!-- ===== 本文HTML（コピー） ===== -->
+${amebloArticle.content}
+`;
+    fs.writeFileSync(outputPath, outputContent, 'utf-8');
+    console.log(`  ameblo: 投稿用ファイル出力 → ${outputPath}`);
+    console.log(`  ameblo: アメブロ管理画面で手動投稿してください`);
+  } catch (e) {
+    console.warn(`  ameblo: エラー — ${e.message}`);
+  }
+
+  console.log('--- 下書き同期完了 ---\n');
+
+  // 6. 再ビルドトリガー
   await triggerRebuild();
 
   console.log('=== 完了 ===');
