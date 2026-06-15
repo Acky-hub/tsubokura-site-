@@ -75,39 +75,62 @@ async function createNoteDraft(title, content, hashtags) {
     return { success: false, error: 'NOTE_EMAIL or NOTE_PASSWORD not set' };
   }
 
+  const COOKIE_PATH = path.resolve(__dirname, '..', 'logs', 'note-auth.json');
+
   let browser;
   try {
     browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({
+
+    // Cookie認証を優先、なければ通常ログイン
+    const hasCookies = fs.existsSync(COOKIE_PATH);
+    const contextOptions = {
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    });
+    };
+    if (hasCookies) {
+      contextOptions.storageState = COOKIE_PATH;
+    }
+    const context = await browser.newContext(contextOptions);
     const page = await context.newPage();
     page.setDefaultTimeout(60000);
 
-    // 1. ログインページへ移動
     console.log('  note: ログイン中...');
-    await page.goto('https://note.com/login?redirectPath=%2F');
-    await page.waitForLoadState('networkidle');
 
-    // 2. メール・パスワードを入力（最初からフォームが表示されている）
-    const emailInput = page.locator('#email').first();
-    await emailInput.fill(email);
+    if (hasCookies) {
+      // Cookieでログイン確認
+      await page.goto('https://note.com/');
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+      const url = page.url();
+      if (url.includes('login')) {
+        throw new Error('Cookie期限切れ: node scripts/note-setup.js を再実行してください');
+      }
+      console.log('  note: Cookieログイン成功');
+    } else {
+      // 通常ログイン
+      await page.goto('https://note.com/login?redirectPath=%2F');
+      await page.waitForLoadState('networkidle');
 
-    const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill(password);
+      const emailInput = page.locator('#email').first();
+      await emailInput.fill(email);
 
-    // 3. ログインボタンをクリック
-    const loginButton = page.locator('button:has-text("ログイン")').first();
-    await loginButton.click();
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
+      const passwordInput = page.locator('input[type="password"]').first();
+      await passwordInput.fill(password);
 
-    // ログイン成功確認
-    const currentUrl = page.url();
-    if (currentUrl.includes('login')) {
-      throw new Error('ログイン失敗: ログインページのまま');
+      const loginButton = page.locator('button:has-text("ログイン")').first();
+      await loginButton.click();
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+
+      const currentUrl = page.url();
+      if (currentUrl.includes('login')) {
+        throw new Error('ログイン失敗: node scripts/note-setup.js でCookieを取得してください');
+      }
+      console.log('  note: ログイン成功');
+
+      // 成功したらCookieを保存（次回以降はCookie認証）
+      const storageState = await context.storageState();
+      fs.writeFileSync(COOKIE_PATH, JSON.stringify(storageState, null, 2));
     }
-    console.log('  note: ログイン成功');
 
     // 4. 新規記事作成ページへ移動 → editor.note.com に遷移する
     await page.goto('https://note.com/notes/new');
