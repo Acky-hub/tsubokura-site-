@@ -1,0 +1,146 @@
+---
+// src/pages/gallery.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// public/images/gallery からファイル一覧を取得
+const galleryDir = path.join(process.cwd(), 'public/images/gallery');
+let imageFiles: string[] = [];
+try {
+  imageFiles = fs.readdirSync(galleryDir)
+    .filter(f => f.endsWith('.jpg') || f.endsWith('.png') || f.endsWith('.webp'))
+    .sort();
+} catch {}
+
+// 画像をカテゴリ分け
+const profiles = imageFiles.filter(f => f.includes('-profile-'));
+const quotes = imageFiles.filter(f => f.includes('-quote-'));
+const businesses = imageFiles.filter(f => f.includes('-business-'));
+const qas = imageFiles.filter(f => f.includes('-qa-'));
+---
+<BaseLayout
+  title="Gallery"
+  description="坪倉秀行（株式会社ヴィクトワール代表取締役）の経営哲学・事業紹介・プロフィール画像ギャラリー"
+>
+  <section class="pt-32 pb-12 md:pt-40 md:pb-16">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <p class="section-label mb-6 gsap-fade-up">Gallery</p>
+      <h1 class="heading-serif text-3xl md:text-5xl mb-4 text-gradient-metallic gsap-fade-up">
+        坪倉秀行 — ギャラリー
+      </h1>
+      <p class="text-text-sub text-sm leading-loose max-w-2xl mx-auto gsap-fade-up">
+        株式会社ヴィクトワール代表取締役 坪倉秀行の経営哲学・事業紹介
+      </p>
+    </div>
+  </section>
+
+  <div class="metallic-line max-w-5xl mx-auto"></div>
+
+  <!-- プロフィール -->
+  {profiles.length > 0 && (
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="heading-serif text-2xl mb-8 gsap-fade-up">Profile</h2>
+        <div class="grid md:grid-cols-3 gap-6" data-stagger-children>
+          {profiles.map(file => (
+            <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
+              <img
+                src={`/images/gallery/${file}`}
+                alt={`坪倉秀行 プロフィール — 株式会社ヴィクトワール代表取締役`}
+                loading="lazy"
+                class="w-full aspect-[1200/630] object-cover"
+                width="1200"
+                height="630"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 経営哲学 -->
+  {quotes.length > 0 && (
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="heading-serif text-2xl mb-8 gsap-fade-up">Philosophy</h2>
+        <div class="grid md:grid-cols-2 gap-6" data-stagger-children>
+          {quotes.map((file, i) => (
+            <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
+              <img
+                src={`/images/gallery/${file}`}
+                alt={`坪倉秀行の経営哲学 — 株式会社ヴィクトワール代表 坪倉秀行の言葉`}
+                loading="lazy"
+                class="w-full aspect-[1200/630] object-cover"
+                width="1200"
+                height="630"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 事業紹介 -->
+  {businesses.length > 0 && (
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="heading-serif text-2xl mb-8 gsap-fade-up">Business</h2>
+        <div class="grid md:grid-cols-3 gap-6" data-stagger-children>
+          {businesses.map(file => (
+            <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
+              <img
+                src={`/images/gallery/${file}`}
+                alt={`坪倉秀行が運営する事業 — 株式会社ヴィクトワール`}
+                loading="lazy"
+                class="w-full aspect-[1200/630] object-cover"
+                width="1200"
+                height="630"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Q&A -->
+  {qas.length > 0 && (
+    <section class="py-16 pb-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="heading-serif text-2xl mb-8 gsap-fade-up">Q&amp;A</h2>
+        <div class="grid md:grid-cols-3 gap-6" data-stagger-children>
+          {qas.map(file => (
+            <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
+              <img
+                src={`/images/gallery/${file}`}
+                alt={`坪倉秀行・株式会社ヴィクトワールについてよくある質問`}
+                loading="lazy"
+                class="w-full aspect-[1200/630] object-cover"
+                width="1200"
+                height="630"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 構造化データ（ImageGallery） -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "name": "坪倉秀行 ギャラリー",
+    "description": "株式会社ヴィクトワール代表取締役 坪倉秀行の経営哲学・事業紹介",
+    "author": {
+      "@type": "Person",
+      "name": "坪倉秀行",
+      "jobTitle": "代表取締役",
+      "worksFor": { "@type": "Organization", "name": "株式会社ヴィクトワール" }
+    },
+    "image": imageFiles.map(f => `https://tsubokurahideyuki.com/images/gallery/${f}`)
+  })} />
+</BaseLayout>
