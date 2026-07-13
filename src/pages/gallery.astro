@@ -18,6 +18,29 @@ const profiles = imageFiles.filter(f => f.includes('-profile-'));
 const quotes = imageFiles.filter(f => f.includes('-quote-'));
 const businesses = imageFiles.filter(f => f.includes('-business-'));
 const qas = imageFiles.filter(f => f.includes('-qa-'));
+
+// ファイル名から識別子を抽出：日付(YYYY-MM-DD)優先、無ければ末尾番号(#NN)、それも無ければ空。
+const tokenOf = (f: string) => {
+  const d = f.match(/(\d{4}-\d{2}-\d{2})/);
+  if (d) return d[1];
+  const n = f.match(/-(\d+)\.(?:jpg|png|webp)$/i);
+  return n ? `#${n[1]}` : '';
+};
+const CATEGORY_LABEL: Record<string, string> = { profile: 'プロフィール', quote: '経営哲学・語録', qa: 'Q&A', business: '事業紹介' };
+const catOf = (f: string) => Object.keys(CATEGORY_LABEL).find((k) => f.includes(`-${k}-`)) ?? 'business';
+// 各画像の一意な alt / caption
+const altOf = (f: string) => {
+  const t = tokenOf(f);
+  return `坪倉秀行 ${CATEGORY_LABEL[catOf(f)]}${t ? `（${t}）` : ''} — 株式会社ヴィクトワール代表取締役`;
+};
+// ImageObject 構造化データ(全画像)
+const imageObjects = imageFiles.map((f) => ({
+  '@type': 'ImageObject',
+  contentUrl: `https://tsubokurahideyuki.com/images/gallery/${f}`,
+  name: `坪倉秀行 ${CATEGORY_LABEL[catOf(f)]}`,
+  caption: altOf(f),
+  creditText: '株式会社ヴィクトワール',
+}));
 ---
 <BaseLayout
   title="Gallery"
@@ -48,7 +71,7 @@ const qas = imageFiles.filter(f => f.includes('-qa-'));
             <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
               <img
                 src={`/images/gallery/${file}`}
-                alt={`坪倉秀行 プロフィール — 株式会社ヴィクトワール代表取締役`}
+                alt={altOf(file)}
                 loading="lazy"
                 class="w-full aspect-[1200/630] object-cover"
                 width="1200"
@@ -71,7 +94,7 @@ const qas = imageFiles.filter(f => f.includes('-qa-'));
             <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
               <img
                 src={`/images/gallery/${file}`}
-                alt={`坪倉秀行の経営哲学 — 株式会社ヴィクトワール代表 坪倉秀行の言葉`}
+                alt={altOf(file)}
                 loading="lazy"
                 class="w-full aspect-[1200/630] object-cover"
                 width="1200"
@@ -94,7 +117,7 @@ const qas = imageFiles.filter(f => f.includes('-qa-'));
             <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
               <img
                 src={`/images/gallery/${file}`}
-                alt={`坪倉秀行が運営する事業 — 株式会社ヴィクトワール`}
+                alt={altOf(file)}
                 loading="lazy"
                 class="w-full aspect-[1200/630] object-cover"
                 width="1200"
@@ -117,7 +140,7 @@ const qas = imageFiles.filter(f => f.includes('-qa-'));
             <div class="overflow-hidden border border-border transition-all duration-400 hover:border-silver/30">
               <img
                 src={`/images/gallery/${file}`}
-                alt={`坪倉秀行・株式会社ヴィクトワールについてよくある質問`}
+                alt={altOf(file)}
                 loading="lazy"
                 class="w-full aspect-[1200/630] object-cover"
                 width="1200"
@@ -142,6 +165,6 @@ const qas = imageFiles.filter(f => f.includes('-qa-'));
       "jobTitle": "代表取締役",
       "worksFor": { "@type": "Organization", "name": "株式会社ヴィクトワール" }
     },
-    "image": imageFiles.map(f => `https://tsubokurahideyuki.com/images/gallery/${f}`)
+    "image": imageObjects
   })} />
 </BaseLayout>
