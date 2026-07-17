@@ -1,0 +1,100 @@
+---
+// src/pages/faq.astro
+// 坪倉秀行 逆SEO D-2: ポジティブクエリ（坪倉秀行 サウナ/ヴィクトワール/岡山）狙撃ページ。
+// FAQPage構造化データ＋内部リンクで、該当クエリでの自社上位化と関連付け強化を狙う。
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const faqs = [
+  {
+    q: '坪倉秀行とはどんな人物ですか？',
+    a: '坪倉秀行（つぼくらひでゆき）は、岡山県を拠点に飲食・美容・ウェルネス・食品ブランドの4領域で事業を展開する株式会社ヴィクトワールの代表取締役です。「目の前の1人を心から満足させる」ことを経営の信念とし、地域に根ざしたサービスの創造に情熱を注いでいます。',
+  },
+  {
+    q: '坪倉秀行が手がけるサウナ「DD SAUNA」とは何ですか？',
+    a: '坪倉秀行が岡山で運営するプライベートサウナが「DD SAUNA（The Dream of Dolphin Sauna）」です。完全個室でととのう体験にこだわり、坪倉秀行が初めて「好きなこと（サウナ）を仕事にした」事業でもあります。岡山でサウナをお探しの方に向けた、坪倉秀行のこだわりが詰まった空間です。',
+  },
+  {
+    q: '株式会社ヴィクトワールとはどんな会社ですか？坪倉秀行との関係は？',
+    a: '株式会社ヴィクトワールは、坪倉秀行が代表取締役を務める岡山拠点の企業です。「定食酒場 にこ家」「Labradorite」「DD SAUNA」「AROMA TRUFFLE」など、飲食・美容・サウナ・食品ブランドにわたる複数事業を展開しています。',
+  },
+  {
+    q: '坪倉秀行は岡山でどんな事業を展開していますか？',
+    a: '坪倉秀行は岡山を拠点に、定食酒場「にこ家」（飲食）、「Labradorite」（美容）、プライベートサウナ「DD SAUNA」（ウェルネス）、トリュフ専門ブランド「AROMA TRUFFLE」（食品）など、複数の領域で事業を展開しています。いずれも株式会社ヴィクトワールが運営しています。',
+  },
+  {
+    q: '坪倉秀行の経営理念・価値観を教えてください。',
+    a: '坪倉秀行は「偉そうにしない経営者でありたい」「利益より、自分も従業員も心が満たされること」を大切にしています。約10年間赤字を出し続けても諦めずに黒字化させた「続ける覚悟」も、坪倉秀行の経営を象徴する価値観です。',
+  },
+  {
+    q: '坪倉秀行の最新情報はどこで見られますか？',
+    a: '坪倉秀行および株式会社ヴィクトワールの最新情報は、当公式サイトのブログでご覧いただけます。プロフィールや事業の詳細、画像ギャラリーも公開しています。',
+  },
+];
+---
+<BaseLayout
+  title="よくある質問（FAQ）"
+  description="坪倉秀行（株式会社ヴィクトワール代表取締役・岡山）に関するよくある質問。サウナ事業DD SAUNA、ヴィクトワールの事業内容、経営理念などをQ&A形式で紹介します。"
+  ogImage="/images/ogp-about.jpg"
+>
+  <!-- Hero -->
+  <section class="pt-32 pb-16 md:pt-40 md:pb-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="section-label mb-6 gsap-fade-up">FAQ</p>
+      <h1 class="heading-serif text-3xl md:text-5xl mb-6 text-gradient-metallic gsap-fade-up">
+        坪倉秀行 — よくある質問
+      </h1>
+      <p class="text-text-sub text-sm leading-loose max-w-2xl mx-auto gsap-fade-up">
+        坪倉秀行（株式会社ヴィクトワール代表取締役・岡山）と、サウナ事業「DD SAUNA」を
+        はじめとする各事業について、よくいただくご質問をまとめました。
+      </p>
+    </div>
+  </section>
+
+  <div class="metallic-line max-w-5xl mx-auto"></div>
+
+  <!-- FAQ -->
+  <section class="py-16 md:py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="flex flex-col gap-10">
+        {faqs.map((item) => (
+          <div class="border-b border-border pb-8 gsap-fade-up">
+            <h2 class="heading-serif text-xl md:text-2xl mb-4 text-text-main">
+              {item.q}
+            </h2>
+            <p class="text-text-sub leading-[2] text-[15px]">
+              {item.a}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <!-- 内部リンク -->
+      <div class="mt-16 text-center gsap-fade-up">
+        <p class="text-text-sub text-sm mb-6">坪倉秀行について、さらに詳しく</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/about" class="btn-luxury btn-luxury-outline" data-cursor-hover>プロフィール</a>
+          <a href="/#business" class="btn-luxury btn-luxury-outline" data-cursor-hover>事業紹介</a>
+          <a href="/gallery" class="btn-luxury btn-luxury-outline" data-cursor-hover>ギャラリー</a>
+          <a href="/blog" class="btn-luxury btn-luxury-outline" data-cursor-hover>ブログ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQPage 構造化データ -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    about: {
+      '@type': 'Person',
+      name: '坪倉秀行',
+      jobTitle: '代表取締役',
+      worksFor: { '@type': 'Organization', name: '株式会社ヴィクトワール' },
+    },
+    mainEntity: faqs.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  })} />
+</BaseLayout>
